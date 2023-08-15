@@ -9,8 +9,12 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.22.9",
+    "@nuxtjs/eslint-module": "^4.1.0",
+    "eslint": "^8.46.0",
+    "eslint-plugin-nuxt": "^4.0.0",
+    "eslint-plugin-vue": "^9.16.1",
     "@nuxt/devtools": "latest",
-    "@types/node": "^18.17.3",
     "nuxt": "^3.6.5"
   }
 }
