@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   ssr: false,
   // devtools: { enabled: true },
   modules: [
+    'nuxt-quasar-ui',
     '@nuxtjs/eslint-module'
   ],
   eslint: {

@@ -10,11 +10,16 @@
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.22.9",
+    "@nuxt/devtools": "latest",
     "@nuxtjs/eslint-module": "^4.1.0",
     "eslint": "^8.46.0",
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-vue": "^9.16.1",
-    "@nuxt/devtools": "latest",
     "nuxt": "^3.6.5"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.16.5",
+    "nuxt-quasar-ui": "^2.0.5",
+    "quasar": "^2.12.4"
   }
 }
