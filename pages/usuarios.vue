@@ -27,6 +27,7 @@
     <FormDialogoUsuario
       v-model="showDialog"
       :usuario="usuarioSelecionado"
+      @atualizar="listarUsuarios"
     />
   </div>
 </template>
@@ -104,7 +105,8 @@ export default {
       usuarios,
       usuarioSelecionado,
       editarUsuario,
-      novoUsuario
+      novoUsuario,
+      listarUsuarios
     }
   }
 }

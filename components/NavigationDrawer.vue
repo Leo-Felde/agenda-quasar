@@ -8,20 +8,20 @@
     <q-scroll-area class="fit">
       <q-list>
         <template
-          v-for="(menuItem, index) in menuList"
+          v-for="(item, index) in menuList"
           :key="`navdrawer-item-${index}`"
         >
           <q-item
             v-ripple
             clickable
-            :active="menuItem.label === 'Outbox'"
-            @click="redirect(menuItem.to)"
+            :active="item.label === 'Outbox'"
+            :to="item.to"
           >
             <q-item-section avatar>
-              <q-icon :name="menuItem.icon" />
+              <q-icon :name="item.icon" />
             </q-item-section>
             <q-item-section>
-              {{ menuItem.label }}
+              {{ item.label }}
             </q-item-section>
           </q-item>
         </template>
@@ -49,15 +49,18 @@ export default {
       },
       {
         icon: 'badge',
-        label: 'Meu cadastro'
+        label: 'Meu cadastro',
+        to: '/meu-cadastro'
       },
       {
         icon: 'portrait',
-        label: 'Usuários'
+        label: 'Usuários',
+        to: '/usuarios'
       },
       {
         icon: 'people_alt',
-        label: 'Pessoas'
+        label: 'Pessoas',
+        to: '/pessoas'
       },
     ])
 

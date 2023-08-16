@@ -25,6 +25,7 @@ module.exports = {
       2
     ],
     'vue/multi-word-component-names': 'off',
+    'vue/no-v-for-template-key': 'off',
     'no-undef': 'off',
     'linebreak-style': 0,
     'quotes': [
