@@ -4,11 +4,20 @@ export default defineNuxtConfig({
   css: [
     '~/assets/styles/main.sass',
   ],
-  // devtools: { enabled: true },
   modules: [
     'nuxt-quasar-ui',
     '@nuxtjs/eslint-module'
   ],
+  
+  quasar: {
+    extras: {
+      fontIcons: ['material-icons']
+    },
+    plugins: ['Notify'],
+    config: {
+      notify:{}
+    }
+  },
   eslint: {
     fix: true
   },
