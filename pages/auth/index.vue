@@ -1,35 +1,41 @@
 <template>
-  <q-card
-    class="my-card"
-  >
+  <q-card id="login-card">
     <q-card-section>
       <div class="text-h6 row flex-center text-primary">
         AgendaApp
       </div>
     </q-card-section>
+    <q-separator />
 
-    <q-card-section class="q-pt-none">
-      <form
-        class="q-gutter-md"
-        @submit.prevent.stop="onSubmit"
-        @reset.prevent.stop="onReset"
+    <q-card-section class="q-px-md">
+      <q-card
+        v-if="invalidCredentials"
+        class="invalid-credentials"
+        flat
+        outline
+      >
+        <span class="text-red q-my-auto">Nome ou senha incorreto</span>
+      </q-card>
+
+      <q-form
+        ref="formulario"
+        class="q-gutter-md q-mt-md"
+        @submit="onSubmit"
       >
         <q-input
-          ref="emailRef"
-          v-model="email"
+          v-model="name"
           filled
-          type="email"
-          label="E-mail *"
-          :rules="rulesEmail"
+          type="name"
+          label="Nome *"
+          :rules="[rules.obrigatorio]"
         />
       
         <q-input
-          ref="passwordRef"
           v-model="password"
           filled
           label="Senha *"
           :type="showPassword ? 'text' : 'password'"
-          :rules="rulesRequired"
+          :rules="[rules.obrigatorio]"
         >
           <template #append>
             <q-icon
@@ -45,10 +51,11 @@
             label="Entrar"
             type="submit"
             color="primary"
+            :loading="loading"
             style="width: 200px"
           />
         </div>
-      </form>
+      </q-form>
     </q-card-section>
   </q-card>
 </template>
@@ -57,66 +64,92 @@
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
 
+import { rules } from '~/utils/validationRules'
+
+import AuthAPI from '~/api/auth'
 export default {
   setup () {
     definePageMeta({
       layout: 'auth'
     })
-    const $q = useQuasar()
-    
-    const email = ref(null)
-    const emailRef = ref(null)
-    const emailRegex = ref(/^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/)
 
+    const formulario = ref(null)
+    const name = ref(null)
     const password = ref(null)
-    const passwordRef = ref(null)
     const showPassword = ref(false)
+    const invalidCredentials = ref(false)
+
+    const loading = ref(false)
+
+    const user = useCurrentUser()
+    const $q = useQuasar()
+
+    const onSubmit = async () => {
+      if (loading.value) return
 
 
-    const rulesRequired = ref([
-      value => (value !== null && value !== '') || 'Campo obrigatório',
-    ])
-    const rulesEmail = ref([
-      value => emailRegex.value.test(value) || 'E-mail inválido',
-      rulesRequired
-    ])
-
-    const onSubmit = () => {
-      emailRef.value.validate()
-      passwordRef.value.validate()
-
-      if (emailRef.value.hasError || emailRef.value.hasError) {
-        // form has error
+      if (!formulario.value.validate()) {
+        return
       }
- 
-      $q.notify('Message')
-      
+
+      await authenticate()
     }
 
-    const onReset = () => {
-      email.value = null
-      password.value = null
+    const authenticate = async () => {
+      console.log('autenticar')
+      const params = {
+        username: name.value,
+        password: password.value
+      }
+      loading.value = true
 
-      emailRef.value.resetValidation()
-      passwordRef.value.resetValidation()
+      try {
+        const resp = await AuthAPI.login(params)
+        invalidCredentials.value = false
+
+        user.value = resp.data
+        localStorage.setItem('userData',  JSON.stringify(user.value))
+        return navigateTo('/')
+      } catch (error) {
+        if (error.response.status === 401) {
+          invalidCredentials.value = true
+        } else {
+          console.error(error)
+          $q.notify({
+            message: 'Erro ao realizar login',
+            position: 'top-right',
+            color: 'red'
+          })
+        }
+      } finally {
+        loading.value = false
+      }
     }
   
     return {
-      email,
-      emailRef,
+      formulario,
+      invalidCredentials,
+      name,
       password,
-      passwordRef,
-      rulesRequired,
-      rulesEmail,
       showPassword,
-      onSubmit,
-      onReset
+      rules,
+      loading,
+      onSubmit
     }
   }
 }
 </script>
 
 <style lang="sass" scoped>
-.my-card
-  width: 500px
+#login-card
+  width: 100%
+  max-width: 400px
+
+.invalid-credentials
+  border: 1px solid red !important
+  background: #fe000009
+  height: 50px
+  display: flex
+  justify-content: center
+
 </style>
