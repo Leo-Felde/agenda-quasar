@@ -38,6 +38,16 @@
         </q-td>
       </template>
 
+      <template #body-cell-actions="props">
+        <q-td :props="props">
+          <tableOptionsBtn
+            :row="props.row"
+            @editar="editarContato"
+            @excluir="excluirContato"
+          />
+        </q-td>
+      </template>
+
       <template #body-cell-endereco="props">
         <q-td :props="props">
           <div>
@@ -46,10 +56,10 @@
         </q-td>
       </template>
     </q-table>
-    <!-- <FormDialogoContato
+    <FormDialogoContato
       v-model="showDialog"
       :contato="contatoSelecionado"
-    /> -->
+    />
   </div>
 </template>
 
@@ -60,11 +70,12 @@ import { useQuasar } from 'quasar'
 
 import ContatosAPI from '~/api/contatos'
 const columns = [
-  { name: 'nome', field: 'pessoa.nome', label: 'Nome', align: 'left', sortable: true },
+  { name: 'nome', field: 'contato.nome', label: 'Nome', align: 'left', sortable: true },
   { field: 'tipoContato', label: 'Forma de contato', align: 'center', sortable: true },
   { field: 'telefone', label: 'Telefone', sortable: true },
   { field: 'email', label: 'E-mail', sortable: true },
-  { name: 'endereco', field: 'pessoa.endereco', label: 'Endereço' },
+  { name: 'endereco', field: 'contato.endereco', label: 'Endereço' },
+  { name: 'actions', align: 'center', label: 'Ações'}
 ]
 
 export default {
@@ -89,6 +100,41 @@ export default {
     const novoContato = () => {
       contatoSelecionado.value = {}
       showDialog.value = true
+    }
+
+    const excluirContato = async () => {
+      $q.dialog({
+        title: 'Excluir contato',
+        message: 'Deseja excluir esse contato? Isso não pode ser revertido',
+        persistent: true,
+        cancel: {
+          label: 'Cancelar',
+          flat: true,
+          color: 'black'
+        },
+        ok: {
+          color: 'red',
+          label: 'Excluir'
+        },
+      }).onOk(async () => {
+        try {
+          // await ContatosAPI.excluir(contatoSelecionada.value.id)
+          $q.notify({
+            message: 'Contato excluído com sucesso',
+            position: 'top-right',
+            color: 'green'
+          })
+          listarContatos()
+        } catch (error) {
+          $q.notify({
+            message: 'Ocorreu um erro ao excluir o contato',
+            position: 'top-right',
+            color: 'red'
+          })
+        } finally {
+          loading.value = false
+        }
+      })
     }
 
     const listarContatos = async () => {
@@ -118,7 +164,8 @@ export default {
       contatos,
       contatoSelecionado,
       editarContato,
-      novoContato
+      novoContato,
+      excluirContato
     }
   }
 }
