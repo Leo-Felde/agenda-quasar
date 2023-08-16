@@ -48,45 +48,11 @@
 
       <template #body-cell-actions="props">
         <q-td :props="props">
-          <q-btn
-            icon="more_vert"
-            flat
-            round
-            @click.stop.prevent=""
-          >
-            <q-menu>
-              <q-list style="min-width: 100px">
-                <q-item-label header>
-                  Ações
-                </q-item-label>
-                <q-item
-                  v-close-popup
-                  clickable
-                  class="row"
-                  @click="editarPessoa(props.row)"
-                >
-                  <q-item-section>
-                    Editar
-                  </q-item-section>
-                  <q-item-section avatar>
-                    <q-icon name="edit" />
-                  </q-item-section>
-                </q-item>
-                <q-item
-                  v-close-popup
-                  clickable
-                  @click="excluirPessoa"
-                >
-                  <q-item-section>
-                    excluir
-                  </q-item-section>
-                  <q-item-section avatar>
-                    <q-icon name="delete" />
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
+          <tableOptionsBtn
+            :row="props.row"
+            @editar="editarPessoa"
+            @excluir="excluirPessoa"
+          />
         </q-td>
       </template>
     </q-table>
