@@ -7,7 +7,7 @@
           class="q-mx-sm"
           filled
           label="Nome *"
-          :rules="rulesRequired"
+          :rules="[rules.obrigatorio]"
           :readonly="readonly"
         />
       </div>
@@ -17,7 +17,7 @@
           class="q-mx-sm"
           filled
           label="Nome de usuário *"
-          :rules="rulesRequired"
+          :rules="[rules.obrigatorio]"
           :readonly="readonly"
         />
       </div>
@@ -28,10 +28,9 @@
           filled
           label="Cpf *"
           mask="###.###.###-##"
-          :rules="rulesRequired"
+          :rules="[rules.cpf]"
           :readonly="readonly"
         />
-        <!-- POR MÁSCARA AQUI DEPOIS :D -->
       </div>
     </div>
 
@@ -43,6 +42,7 @@
           filled
           label="Data de nascimento"
           mask="##/##/####"
+          :rules="[rules.data]"
           :readonly="readonly"
         >
           <template #append>
@@ -80,32 +80,36 @@
           class="q-mx-sm"
           filled
           label="E-mail"
-          :rules="['email']"
+          :rules="[rules.email]"
           :readonly="readonly"
         />
       </div>
-      <!-- POR REGRA DE E-MAIL E MÁSCARA DE TELEFONE -->
       <div class="col-4">
         <q-input
           v-model="form.telefone"
           class="q-mx-sm"
           filled
           label="Telefone"
-          mask="(##)#########"
+          mask="(##) ####-#####"
           :readonly="readonly"
         />
       </div>
     </div>
 
-    <div class="row">
+    <div
+      v-if="form.tipos"
+      class="row"
+    >
       <div class="col-4">
         <q-select
-          v-model="form.tipo"
+          v-model="form.tipos"
           class="q-mx-sm"
           filled
           label="Tipo de Usuário *"
           option-label="text"
           option-value="value"
+          map-options
+          emit-value
           :options="tiposUsuario"
           :readonly="readonly"
         />
@@ -140,12 +144,13 @@
       </div>
       <div class="col-4">
         <q-input
-          v-model="form.password"
+          v-model="confirmPassword"
           class="q-mx-sm"
           filled
           label="Confirmar Senha *"
           :type="showPassword ? 'text' : 'password'"
           :readonly="readonly"
+          :rules="[confirmPasswordRule]"
         />
       </div>
     </div>
@@ -154,6 +159,8 @@
 
 <script>
 import { ref, onMounted } from 'vue'
+
+import { rules } from '~/utils/validationRules'
 export default {
 
   props: {
@@ -167,15 +174,17 @@ export default {
 
   setup (props) {
     const form = ref({})
+    const confirmPassword = ref(null)
+    const showPassword = ref(false)
+    
     const tiposUsuario = ref([
       { text: 'Usuário', value: 'ROLE_USER' },
       { text: 'Admin', value: 'ROLE_ADMIN' },
     ])
-    const showPassword = ref(false)
 
-    const rulesRequired = ref([
-      value => (value !== null && value !== '') || 'Campo obrigatório',
-    ])
+    const confirmPasswordRule = () => {
+      return form.value.password ? confirmPassword.value === form.value.password || 'As senhas não são iguais' : true
+    }
 
     watch(() => props.usuario, () => {
       form.value = props.usuario
@@ -187,8 +196,10 @@ export default {
 
     return {
       form,
+      confirmPassword,
       tiposUsuario,
-      rulesRequired,
+      confirmPasswordRule,
+      rules,
       showPassword
     }
   }
