@@ -28,13 +28,7 @@
     />
 
     <q-page-container>
-      <q-card
-        id="body-card"
-        bordered
-        flat
-      >
-        <slot />
-      </q-card>
+      <slot />
     </q-page-container>
   </q-layout>
 </template>
@@ -64,7 +58,7 @@ $mainHeaderSize: 70px
   display: flex
   height: $mainHeaderSize
 
-#body-card
+.q-page-container
   height: 100%
   margin: $bodyMargin
   padding: 28px

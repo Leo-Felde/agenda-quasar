@@ -56,6 +56,9 @@
           >
             <q-menu>
               <q-list style="min-width: 100px">
+                <q-item-label header>
+                  Ações
+                </q-item-label>
                 <q-item
                   v-close-popup
                   clickable
@@ -63,13 +66,10 @@
                   @click="editarPessoa(props.row)"
                 >
                   <q-item-section>
-                    <div>
-                      Editar
-                      <q-icon
-                        name="edit"
-                        size="1.1rem"
-                      />
-                    </div>
+                    Editar
+                  </q-item-section>
+                  <q-item-section avatar>
+                    <q-icon name="edit" />
                   </q-item-section>
                 </q-item>
                 <q-item
@@ -78,13 +78,10 @@
                   @click="excluirPessoa"
                 >
                   <q-item-section>
-                    <div>
-                      Excluir
-                      <q-icon
-                        name="delte"
-                        size="1.1rem"
-                      />
-                    </div>
+                    excluir
+                  </q-item-section>
+                  <q-item-section avatar>
+                    <q-icon name="delete" />
                   </q-item-section>
                 </q-item>
               </q-list>
