@@ -13,7 +13,10 @@ export default defineNuxtConfig({
     extras: {
       fontIcons: ['material-icons']
     },
-    plugins: ['Notify'],
+    plugins: [
+      'Notify',
+      'Dialog'
+    ],
     config: {
       notify:{}
     }
