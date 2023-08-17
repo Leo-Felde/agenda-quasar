@@ -18,10 +18,10 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { useQuasar } from 'quasar'
-
 
 import { isEqual, cloneDeep } from 'lodash-es'
+import { showSuccess, showError } from '~/plugins/notify'
+import { showDiscardChanges, showConfirmDelete } from '../../plugins/promptDialog'
 
 import PessoasAPI from '~/api/pessoas'
 export default {
@@ -40,8 +40,6 @@ export default {
     const showDialog = ref(false)
     const pessoaSelecionada = ref({endereco: {}})
     const pessoaOriginal = ref({endereco: {}})
-
-    const $q = useQuasar()
 
     const alteracoesPendentes = computed(() => {
       return !isEqual(pessoaSelecionada.value, pessoaOriginal.value)
@@ -62,24 +60,10 @@ export default {
       if (newValue && props.pessoa.id) carregar()
     })
     
-    const cancelar = () => {
+    const cancelar = async () => {
       if (alteracoesPendentes.value) {
-        $q.dialog({
-          title: 'Alterações pendentes',
-          message: 'Deseja cancelar e descartar todas as alterações?',
-          persistent: true,
-          cancel: {
-            label: 'Cancelar',
-            flat: true,
-            color: 'black'
-          },
-          ok: {
-            color: 'primary',
-            label: 'Descartar'
-          },
-        }).onOk(() => {
-          conclude()
-        })
+        const confirm = await showDiscardChanges()
+        if (confirm) conclude()
       } else {
         conclude()
       }
@@ -94,59 +78,31 @@ export default {
 
       try {
         await PessoasAPI.salvar(pessoaSelecionada.value)
-        $q.notify({
-          message: props.pessoa.id ? 'Pessoa atualizada' : 'Pessoa cadastrada',
-          position: 'top-right',
-          color: 'green'
-        })
+        showSuccess(props.pessoa.id ? 'Pessoa atualizada' : 'Pessoa cadastrada')
         emit('atualizar')
         conclude()
       } catch (error) {
         console.error(error)
-        $q.notify({
-          message: 'Ocorreu um erro ao salvar a pessoa',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Ocorreu um erro ao salvar a pessoa')
       } finally {
         loading.value = false
       }
     }
 
     const excluir = async () => {
-      $q.dialog({
-        title: 'Excluir pessoa',
-        message: 'Deseja excluir essa pessoa? Isso não pode ser revertido',
-        persistent: true,
-        cancel: {
-          label: 'Cancelar',
-          flat: true,
-          color: 'black'
-        },
-        ok: {
-          color: 'red',
-          label: 'Excluir'
-        },
-      }).onOk(async () => {
+      const confirm = await showConfirmDelete('Excluir pessoa', 'Deseja excluir essa pessoa? Isso não pode ser revertido')
+      if (confirm) {
         try {
           // await PessoasAPI.excluir(pessoaSelecionada.value.id)
-          $q.notify({
-            message: 'Pessoa excluída com sucesso',
-            position: 'top-right',
-            color: 'green'
-          })
+          showSuccess('Pessoa excluída com sucesso')
           emit('atualizar')
           conclude()
         } catch (error) {
-          $q.notify({
-            message: 'Ocorreu um erro ao excluir a pessoa',
-            position: 'top-right',
-            color: 'red'
-          })
+          showError('Ocorreu um erro ao excluir a pessoa')
         } finally {
           loading.value = false
         }
-      })
+      }
     }
 
     const carregar = async () => {
@@ -157,11 +113,7 @@ export default {
         pessoaSelecionada.value = cloneDeep(pessoaOriginal.value)
       } catch (error) {
         console.error(error)
-        $q.notify({
-          message: 'Ocorreu um erro ao carregar a pessoa',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Ocorreu um erro ao carregar a pessoa')
       } finally {
         loading.value = false
       }

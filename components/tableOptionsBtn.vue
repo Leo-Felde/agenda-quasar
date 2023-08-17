@@ -54,7 +54,7 @@ export default {
     }
   },
 
-  emits: ['editar'],
+  emits: ['editar', 'excluir'],
   setup () {
 
   }

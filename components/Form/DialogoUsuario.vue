@@ -17,11 +17,11 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { useQuasar } from 'quasar'
-
 
 import { isEqual, cloneDeep } from 'lodash-es'
 import { formatDate } from '~/utils/formatacao'
+import { showSuccess,showError } from '../../plugins/notify'
+import { showDiscardChanges } from '../../plugins/promptDialog'
 
 import UsuariosAPI from '~/api/usuarios'
 export default {
@@ -40,8 +40,6 @@ export default {
     const showDialog = ref(false)
     const usuarioSelecionado = ref({tipos: ['ROLE_USER']})
     const usuarioOriginal = ref({tipos: ['ROLE_USER']})
-
-    const $q = useQuasar()
 
     const alteracoesPendentes = computed(() => {
       return !isEqual(usuarioSelecionado.value, usuarioOriginal.value)
@@ -62,24 +60,10 @@ export default {
       if (newValue && props.usuario.id) carregar()
     })
     
-    const cancelar = () => {
+    const cancelar = async () => {
       if (alteracoesPendentes.value) {
-        $q.dialog({
-          title: 'Alterações pendentes',
-          message: 'Deseja cancelar e descartar todas as alterações?',
-          persistent: true,
-          cancel: {
-            label: 'Cancelar',
-            flat: true,
-            color: 'black'
-          },
-          ok: {
-            color: 'primary',
-            label: 'Descartar'
-          },
-        }).onOk(() => {
-          conclude()
-        })
+        const confirm = await showDiscardChanges()
+        if (confirm) conclude()
       } else {
         conclude()
       }
@@ -100,20 +84,12 @@ export default {
         params.usuario.dataNascimento = formatDate(params.usuario.dataNascimento, false)
         delete params.usuario.tipos
         await UsuariosAPI.salvar(params)
-        $q.notify({
-          message: props.usuario.id ? 'Usuario atualizado' : 'Usuario cadastrado',
-          position: 'top-right',
-          color: 'green'
-        })
+        showSuccess(props.usuario.id ? 'Usuario atualizado' : 'Usuario cadastrado')
         emit('atualizar')
         conclude()
       } catch (error) {
         console.error(error)
-        $q.notify({
-          message: 'Ocorreu um erro ao salvar o usuario',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Ocorreu um erro ao salvar o usuario')
       } finally {
         loading.value = false
       }
@@ -129,11 +105,7 @@ export default {
         usuarioSelecionado.value = cloneDeep(usuarioOriginal.value)
       } catch (error) {
         console.error(error)
-        $q.notify({
-          message: 'Ocorreu um erro ao carregar o usuario',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Ocorreu um erro ao carregar o usuario')
       } finally {
         loading.value = false
       }

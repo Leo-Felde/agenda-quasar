@@ -62,8 +62,8 @@
 
 <script>
 import { ref } from 'vue'
-import { useQuasar } from 'quasar'
 
+import { showError } from '~/plugins/notify'
 import { rules } from '~/utils/validationRules'
 
 import AuthAPI from '~/api/auth'
@@ -82,7 +82,6 @@ export default {
     const loading = ref(false)
 
     const user = useCurrentUser()
-    const $q = useQuasar()
 
     const onSubmit = async () => {
       if (loading.value) return
@@ -115,11 +114,7 @@ export default {
           invalidCredentials.value = true
         } else {
           console.error(error)
-          $q.notify({
-            message: 'Erro ao realizar login',
-            position: 'top-right',
-            color: 'red'
-          })
+          showError('Erro ao realizar login')
         }
       } finally {
         loading.value = false

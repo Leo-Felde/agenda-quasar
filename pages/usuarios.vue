@@ -35,8 +35,8 @@
 
 <script>
 import { ref, onMounted } from 'vue'
-import { useQuasar } from 'quasar'
 
+import { showError } from '~/plugins/notify'
 import { formatDate } from '~/utils/formatacao'
 
 import UsuariosAPI from '~/api/usuarios'
@@ -56,8 +56,6 @@ export default {
     const usuarioSelecionado = ref({})
     const loading = ref(false)
     const showDialog = ref(false)
-    
-    const $q = useQuasar()
 
     onMounted(() => {
       listarUsuarios()
@@ -88,11 +86,7 @@ export default {
         })
       } catch (error) {
         console.error(error)
-        $q.notify({
-          message: 'Erro ao listar os usuários',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Erro ao listar os usuários')
       } finally {
         loading.value = false
       }

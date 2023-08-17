@@ -62,7 +62,9 @@
 
 <script>
 import { ref, onMounted } from 'vue'
-import { useQuasar } from 'quasar'
+
+import { showSuccess, showError } from '~/plugins/notify'
+import { showConfirmDelete } from '../plugins/promptDialog'
 
 import PessoasAPI from '~/api/pessoas'
 const columns = [
@@ -79,8 +81,6 @@ export default {
     const pessoaSelecionado = ref({endereco: {}})
     const loading = ref(false)
     const showDialog = ref(false)
-    
-    const $q = useQuasar()
 
     onMounted(() => {
       listarPessoas()
@@ -97,38 +97,18 @@ export default {
     }
 
     const excluirPessoa = async () => {
-      $q.dialog({
-        title: 'Excluir pessoa',
-        message: 'Deseja excluir essa pessoa? Isso não pode ser revertido',
-        persistent: true,
-        cancel: {
-          label: 'Cancelar',
-          flat: true,
-          color: 'black'
-        },
-        ok: {
-          color: 'red',
-          label: 'Excluir'
-        },
-      }).onOk(async () => {
+      const confirm = await showConfirmDelete('Excluir pessoa', 'Deseja excluir essa pessoa? Isso não pode ser revertido')
+      if (confirm) {
         try {
           // await PessoasAPI.excluir(pessoaSelecionada.value.id)
-          $q.notify({
-            message: 'Pessoa excluída com sucesso',
-            position: 'top-right',
-            color: 'green'
-          })
+          showSuccess('Pessoa excluída com sucesso')
           listarPessoas()
         } catch (error) {
-          $q.notify({
-            message: 'Ocorreu um erro ao excluir a pessoa',
-            position: 'top-right',
-            color: 'red'
-          })
+          showError('Ocorreu um erro ao excluir a pessoa')
         } finally {
           loading.value = false
         }
-      })
+      }
     }
 
     const listarPessoas = async () => {
@@ -141,11 +121,7 @@ export default {
         pessoas.value = resp.data
       } catch (error) {
         console.error(error)
-        $q.notify({
-          message: 'Erro ao listar os pessoas',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Erro ao listar as pessoas')
       } finally {
         loading.value = false
       }

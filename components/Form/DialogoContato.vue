@@ -18,12 +18,12 @@
 
 <script>
 import { ref, computed } from 'vue'
-import { useQuasar } from 'quasar'
-
 
 import { isEqual, cloneDeep } from 'lodash-es'
+import { showSuccess, showError } from '~/plugins/notify'
 
 import ContatosAPI from '~/api/contatos'
+import { showDiscardChanges, showConfirmDelete } from '../../plugins/promptDialog'
 export default {
   props: {
     contato: {
@@ -40,8 +40,6 @@ export default {
     const showDialog = ref(false)
     const contatoSelecionado = ref({})
     const contatoOriginal = ref({})
-
-    const $q = useQuasar()
 
     const alteracoesPendentes = computed(() => {
       return !isEqual(contatoSelecionado.value, contatoOriginal.value)
@@ -62,26 +60,10 @@ export default {
       if (newValue && props.contato.id) carregar()
     })
     
-    const cancelar = () => {
+    const cancelar = async () => {
       if (alteracoesPendentes.value) {
-        console.log(contatoOriginal.value)
-        console.log(contatoSelecionado.value)
-        $q.dialog({
-          title: 'Alterações pendentes',
-          message: 'Deseja cancelar e descartar todas as alterações?',
-          persistent: true,
-          cancel: {
-            label: 'Cancelar',
-            flat: true,
-            color: 'black'
-          },
-          ok: {
-            color: 'primary',
-            label: 'Descartar'
-          },
-        }).onOk(() => {
-          conclude()
-        })
+        const confirm = await showDiscardChanges()
+        if (confirm) conclude()
       } else {
         conclude()
       }
@@ -96,59 +78,32 @@ export default {
 
       try {
         await ContatosAPI.salvar(contatoSelecionado.value)
-        $q.notify({
-          message: props.contato.id ? 'Contato atualizada' : 'Contato cadastrada',
-          position: 'top-right',
-          color: 'green'
-        })
+
+        showSuccess(props.contato.id ? 'Contato atualizada' : 'Contato cadastrada')
         emit('atualizar')
         conclude()
       } catch (error) {
         console.error(error)
-        $q.notify({
-          message: 'Ocorreu um erro ao salvar o contato',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Ocorreu um erro ao salvar o contato')
       } finally {
         loading.value = false
       }
     }
 
     const excluir = async () => {
-      $q.dialog({
-        title: 'Excluir contato',
-        message: 'Deseja excluir esse contato? Isso não pode ser revertido',
-        persistent: true,
-        cancel: {
-          label: 'Cancelar',
-          flat: true,
-          color: 'black'
-        },
-        ok: {
-          color: 'red',
-          label: 'Excluir'
-        },
-      }).onOk(async () => {
+      const confirm = await showConfirmDelete('Excluir contato','Deseja excluir esse contato? Isso não pode ser revertido')
+      if (confirm) {
         try {
           // await ContatosAPI.excluir(contatoSelecionado.value.id)
-          $q.notify({
-            message: 'Contato excluído com sucesso',
-            position: 'top-right',
-            color: 'green'
-          })
+          showSuccess('Contato excluído com sucesso')
           emit('atualizar')
           conclude()
         } catch (error) {
-          $q.notify({
-            message: 'Ocorreu um erro ao excluir o contato',
-            position: 'top-right',
-            color: 'red'
-          })
+          showError('Ocorreu um erro ao excluir o contato')
         } finally {
           loading.value = false
         }
-      })
+      }
     }
 
     const carregar =  () => {
@@ -157,11 +112,7 @@ export default {
         contatoSelecionado.value = cloneDeep(contatoOriginal.value)
       } catch (error) {
         console.error(error)
-        $q.notify({
-          message: 'Ocorreu um erro ao carregar o contato',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Ocorreu um erro ao carregar o contato')
       } finally {
         loading.value = false
       }

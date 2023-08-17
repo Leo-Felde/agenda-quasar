@@ -61,7 +61,8 @@
 
 <script>
 import { ref, onMounted } from 'vue'
-import { useQuasar } from 'quasar'
+
+import { showSuccess, showError } from '~/plugins/notify'
 
 import ContatosAPI from '~/api/contatos'
 const columns = [
@@ -80,8 +81,6 @@ export default {
     const contatoSelecionado = ref({})
     const loading = ref(false)
     const showDialog = ref(false)
-    
-    const $q = useQuasar()
 
     onMounted(() => {
       listarContatos()
@@ -98,38 +97,18 @@ export default {
     }
 
     const excluirContato = async () => {
-      $q.dialog({
-        title: 'Excluir contato',
-        message: 'Deseja excluir esse contato? Isso não pode ser revertido',
-        persistent: true,
-        cancel: {
-          label: 'Cancelar',
-          flat: true,
-          color: 'black'
-        },
-        ok: {
-          color: 'red',
-          label: 'Excluir'
-        },
-      }).onOk(async () => {
+      const confirm = await showConfirmDelete('Excluir contato', 'Deseja excluir esse contato? Isso não pode ser revertido')
+      if (confirm) {
         try {
           // await ContatosAPI.excluir(contatoSelecionada.value.id)
-          $q.notify({
-            message: 'Contato excluído com sucesso',
-            position: 'top-right',
-            color: 'green'
-          })
+          showSuccess('Contato excluído com sucesso')
           listarContatos()
         } catch (error) {
-          $q.notify({
-            message: 'Ocorreu um erro ao excluir o contato',
-            position: 'top-right',
-            color: 'red'
-          })
+          showError('Ocorreu um erro ao excluir o contato')
         } finally {
           loading.value = false
         }
-      })
+      }
     }
 
     const listarContatos = async () => {
@@ -142,11 +121,7 @@ export default {
         contatos.value = resp.data
       } catch (error) {
         console.error(error)
-        $q.notify({
-          message: 'Erro ao listar os contatos',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Erro ao listar os contatos')
       } finally {
         loading.value = false
       }

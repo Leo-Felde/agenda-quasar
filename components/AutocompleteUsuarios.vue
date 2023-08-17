@@ -23,6 +23,8 @@
 <script>
 import { ref } from 'vue'
 
+import { showError } from '~/plugins/notify'
+
 import UsuariosAPI from '~/api/usuarios'
 export default {
   props: {
@@ -41,11 +43,7 @@ export default {
         usuarios.value = resp.data
       } catch (error) {
         console.error(error)
-        $q.notify({
-          message: 'Não foi possivel pesquisar usuários',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Não foi possivel pesquisar usuários')
       }
     }
     const selecionarUsuario = () => {

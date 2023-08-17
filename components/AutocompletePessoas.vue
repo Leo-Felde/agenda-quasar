@@ -23,6 +23,8 @@
 <script>
 import { ref } from 'vue'
 
+import { showError } from '~/plugins/notify'
+
 import PessoasAPI from '~/api/pessoas'
 export default {
   props: {
@@ -41,11 +43,7 @@ export default {
         pessoas.value = resp.data
       } catch (error) {
         console.error(error)
-        $q.notify({
-          message: 'Não foi possivel pesquisar pessoas',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Não foi possivel pesquisar pessoas')
       }
     }
     const selecionarPessoa = () => {

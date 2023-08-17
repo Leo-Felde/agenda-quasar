@@ -53,10 +53,11 @@
 
 <script>
 import { ref, onMounted, computed } from 'vue'
-import { useQuasar } from 'quasar'
 
 import { isEqual, cloneDeep } from 'lodash-es'
 import { formatDate } from '~/utils/formatacao'
+import { showSuccess, showError } from '~/plugins/notify'
+import { showDiscardChanges } from '../plugins/promptDialog'
 
 import UsuariosAPI from '~/api/usuarios'
 export default {
@@ -68,7 +69,6 @@ export default {
     const usuarioOriginal = ref({})
     
     const user = useCurrentUser()
-    const $q = useQuasar()
 
     const alteracoesPendentes = computed(() => {
       return editando.value ? !isEqual(usuarioOriginal.value, usuario.value) : false
@@ -88,44 +88,22 @@ export default {
         param.usuario.dataNascimento = formatDate(param.usuario.dataNascimento, false)
 
         await UsuariosAPI.atualizar(param.usuario)
-        $q.notify({
-          message: 'Usuario atualizado',
-          position: 'top-right',
-          color: 'green'
-        })
+        showSuccess('Usuario atualizado')
         editando.value = false
         setTimeout(() => {
           carregar()
         }, 200)
       } catch (error) {
-        $q.notify({
-          message: 'Não foi possivel salvar as alterações',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Não foi possivel salvar as alterações')
       } finally {
         loading.value = false
       }
     }
 
-    const cancelar = () => {
+    const cancelar = async () => {
       if (alteracoesPendentes.value) {
-        $q.dialog({
-          title: 'Alterações pendentes',
-          message: 'Deseja cancelar e descartar todas as alterações?',
-          persistent: true,
-          cancel: {
-            label: 'Cancelar',
-            flat: true,
-            color: 'black'
-          },
-          ok: {
-            color: 'primary',
-            label: 'Descartar'
-          },
-        }).onOk(() => {
-          conclude()
-        })
+        const confirm = await showDiscardChanges()
+        if (confirm) conclude()
       } else {
         conclude()
       }
@@ -150,11 +128,7 @@ export default {
 
         usuario.value = cloneDeep(usuarioOriginal.value)
       } catch (error) {
-        $q.notify({
-          message: 'Não foi possivel carregar as informações',
-          position: 'top-right',
-          color: 'red'
-        })
+        showError('Não foi possivel carregar as informações')
       } finally {
         loading.value = false
       }
