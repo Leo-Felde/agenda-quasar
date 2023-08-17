@@ -83,7 +83,7 @@ export default {
         conclude()
       } catch (error) {
         console.error(error)
-        showError('Ocorreu um erro ao salvar a pessoa')
+        showError('Não foi possível salvar as alterações')
       } finally {
         loading.value = false
       }
@@ -98,7 +98,7 @@ export default {
           emit('atualizar')
           conclude()
         } catch (error) {
-          showError('Ocorreu um erro ao excluir a pessoa')
+          showError('Não foi possível excluir a pessoa')
         } finally {
           loading.value = false
         }
@@ -113,7 +113,7 @@ export default {
         pessoaSelecionada.value = cloneDeep(pessoaOriginal.value)
       } catch (error) {
         console.error(error)
-        showError('Ocorreu um erro ao carregar a pessoa')
+        showError('Não foi possível carregar a pessoa')
       } finally {
         loading.value = false
       }

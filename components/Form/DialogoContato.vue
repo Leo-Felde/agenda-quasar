@@ -79,12 +79,12 @@ export default {
       try {
         await ContatosAPI.salvar(contatoSelecionado.value)
 
-        showSuccess(props.contato.id ? 'Contato atualizada' : 'Contato cadastrada')
+        showSuccess(props.contato.id ? 'Contato atualizado' : 'Contato cadastrado')
         emit('atualizar')
         conclude()
       } catch (error) {
         console.error(error)
-        showError('Ocorreu um erro ao salvar o contato')
+        showError('Não foi possível salvar as alterações')
       } finally {
         loading.value = false
       }
@@ -99,7 +99,7 @@ export default {
           emit('atualizar')
           conclude()
         } catch (error) {
-          showError('Ocorreu um erro ao excluir o contato')
+          showError('Não foi possível excluir o contato')
         } finally {
           loading.value = false
         }
@@ -112,7 +112,7 @@ export default {
         contatoSelecionado.value = cloneDeep(contatoOriginal.value)
       } catch (error) {
         console.error(error)
-        showError('Ocorreu um erro ao carregar o contato')
+        showError('Não foi possível carregar o contato')
       } finally {
         loading.value = false
       }

@@ -95,7 +95,6 @@ export default {
     }
 
     const authenticate = async () => {
-      console.log('autenticar')
       const params = {
         username: name.value,
         password: password.value
@@ -114,7 +113,7 @@ export default {
           invalidCredentials.value = true
         } else {
           console.error(error)
-          showError('Erro ao realizar login')
+          showError('Não foi possível realizar login')
         }
       } finally {
         loading.value = false

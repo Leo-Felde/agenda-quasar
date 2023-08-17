@@ -136,7 +136,7 @@ export default {
           showSuccess('Contato excluído com sucesso')
           listarContatos()
         } catch (error) {
-          showError('Ocorreu um erro ao excluir o contato')
+          showError('Não foi possível excluir o contato')
         } finally {
           loading.value = false
         }

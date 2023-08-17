@@ -89,7 +89,7 @@ export default {
         conclude()
       } catch (error) {
         console.error(error)
-        showError('Ocorreu um erro ao salvar o usuario')
+        showError('Não foi possível salvar as alterações')
       } finally {
         loading.value = false
       }
@@ -105,7 +105,7 @@ export default {
         usuarioSelecionado.value = cloneDeep(usuarioOriginal.value)
       } catch (error) {
         console.error(error)
-        showError('Ocorreu um erro ao carregar o usuario')
+        showError('Não foi possível carregar o usuario')
       } finally {
         loading.value = false
       }

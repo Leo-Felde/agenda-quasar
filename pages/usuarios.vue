@@ -62,7 +62,6 @@ export default {
     })
 
     const editarUsuario = (event, usuario) => {
-      console.log(usuario)
       usuarioSelecionado.value = usuario
       showDialog.value = true
     }
@@ -86,7 +85,7 @@ export default {
         })
       } catch (error) {
         console.error(error)
-        showError('Erro ao listar os usuários')
+        showError('Não foi possível listar os usuários')
       } finally {
         loading.value = false
       }

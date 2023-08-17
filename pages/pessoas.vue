@@ -104,7 +104,7 @@ export default {
           showSuccess('Pessoa excluída com sucesso')
           listarPessoas()
         } catch (error) {
-          showError('Ocorreu um erro ao excluir a pessoa')
+          showError('Não foi possível excluir a pessoa')
         } finally {
           loading.value = false
         }
@@ -121,7 +121,7 @@ export default {
         pessoas.value = resp.data
       } catch (error) {
         console.error(error)
-        showError('Erro ao listar as pessoas')
+        showError('Não foi possível listar as pessoas')
       } finally {
         loading.value = false
       }
