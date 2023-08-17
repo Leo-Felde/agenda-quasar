@@ -23,14 +23,15 @@
         @submit="onSubmit"
       >
         <q-input
+          id="username"
           v-model="name"
           filled
-          type="name"
           label="Nome *"
           :rules="[rules.obrigatorio]"
         />
       
         <q-input
+          id="password"
           v-model="password"
           filled
           label="Senha *"
