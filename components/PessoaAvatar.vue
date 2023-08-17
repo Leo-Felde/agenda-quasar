@@ -1,15 +1,13 @@
 <template>
-  <div>
-    <q-avatar
-      size="48px"
+  <q-avatar
+    size="48px"
+  >
+    <img
+      :id="`image-${id}`"
+      class="user-image"
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"
     >
-      <img
-        :id="`image-${id}`"
-        class="user-image"
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png"
-      >
-    </q-avatar>
-  </div>
+  </q-avatar>
 </template>
 
 <script>

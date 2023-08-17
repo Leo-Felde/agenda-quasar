@@ -4,7 +4,7 @@
       class="my-sticky-header-table"
       flat
       bordered
-      :rows="contatos"
+      :rows="lista"
       :columns="columns"
       :loading="loading"
       row-key="field"
@@ -29,6 +29,12 @@
           <div>
             <PessoaAvatar :id="props.row.pessoa.id" />
             {{ props.row.pessoa.nome }}
+            <q-icon
+              v-if="props.row.favorito"
+              name="star"
+              color="yellow"
+              size="sm"
+            />
           </div>
         </q-td>
       </template>
@@ -37,9 +43,26 @@
         <q-td :props="props">
           <tableOptionsBtn
             :row="props.row"
+            :options="extraActions"
             @editar="editarContato"
             @excluir="excluirContato"
-          />
+          >
+            <template #item-favorite>
+              <q-item
+                v-close-popup
+                clickable
+                class="row"
+                @click="toggleFavorito(props.row)"
+              >
+                <q-item-section>
+                  {{ props.row.favorito ? 'Desfavoritar' : 'Favoritar' }}
+                </q-item-section>
+                <q-item-section avatar>
+                  <q-icon name="star" />
+                </q-item-section>
+              </q-item>
+            </template>
+          </tableOptionsBtn>
         </q-td>
       </template>
 
@@ -54,6 +77,7 @@
     <FormDialogoContato
       v-model="showDialog"
       :contato="contatoSelecionado"
+      @atualizar="listarTodos"
     />
   </div>
 </template>
@@ -63,8 +87,10 @@
 import { ref, onMounted } from 'vue'
 
 import { showSuccess, showError } from '~/plugins/notify'
+import { confirmDialog } from '../plugins/promptDialog' 
 
 import ContatosAPI from '~/api/contatos'
+import FavoritosAPI from '~/api/favoritos'
 const columns = [
   { name: 'nome', field: 'contato.nome', label: 'Nome', align: 'left', sortable: true },
   { field: 'tipoContato', label: 'Forma de contato', align: 'center', sortable: true },
@@ -74,16 +100,22 @@ const columns = [
   { name: 'actions', align: 'center', label: 'Ações'}
 ]
 
+const extraActions = [
+  'favorite'
+]
+
 export default {
 
   setup () {
     const contatos = ref([])
+    const favoritos = ref([])
+    const lista = ref([])
     const contatoSelecionado = ref({})
     const loading = ref(false)
     const showDialog = ref(false)
 
     onMounted(() => {
-      listarContatos()
+      listarTodos()
     })
 
     const editarContato = (contato) => {
@@ -111,6 +143,21 @@ export default {
       }
     }
 
+    const listarFavoritos = async () => {
+      loading.value = true
+
+      try {
+        const resp = await FavoritosAPI.pesquisar()
+
+        favoritos.value = new Set(resp.data.map(contato => contato.id)) // armazena apenas o id dos usuários favoritos
+      } catch (error) {
+        console.error(error)
+        showError('Não foi possível listar os favoritos')
+      } finally {
+        loading.value = false
+      }
+    }
+
     const listarContatos = async () => {
       loading.value = true
 
@@ -121,21 +168,58 @@ export default {
         contatos.value = resp.data
       } catch (error) {
         console.error(error)
-        showError('Erro ao listar os contatos')
+        showError('Não foi possível listar os contatos')
       } finally {
         loading.value = false
       }
     }
+
+    const listarTodos = async (useSearch = false) => {
+      await listarContatos(useSearch)
+      await listarFavoritos()
+      lista.value = contatos.value.map(contato => ({
+        ...contato,
+        favorito: favoritos.value.has(contato.id)
+      }))
+    }
+
+    const toggleFavorito = async (contato) => {
+      if (contato.favorito) {
+        const confirm = await confirmDialog('Desfavoritar', 'Remover este contato dos favoritos?')
+        if (!confirm) return
+      }
+
+      favoritar(contato)
+    }
+
+    const favoritar = async (contato) => {
+      try {
+        if (contato.favorito) {
+          await FavoritosAPI.excluir(contato.id)
+        } else {
+          await FavoritosAPI.salvar(contato)
+        }
+        showSuccess(`Contato ${contato.favorito ? 'des' : ''}favoritado com sucesso`)
+        listarTodos()
+      } catch (error) {
+        console.error(error)
+        showError(`Não foi possível ${contato.favorito ? 'des' : ''}favoritar o contato`)
+      }
+    }
+
     
     return {
       columns,
+      extraActions,
       showDialog,
       loading,
-      contatos,
+      lista,
       contatoSelecionado,
+      listarTodos,
       editarContato,
       novoContato,
-      excluirContato
+      excluirContato,
+      toggleFavorito
     }
   }
 }

@@ -14,6 +14,7 @@
           Ações
         </q-item-label>
         <q-item
+          v-if="showDefaultOptions"
           v-close-popup
           clickable
           class="row"
@@ -27,6 +28,7 @@
           </q-item-section>
         </q-item>
         <q-item
+          v-if="showDefaultOptions"
           v-close-popup
           clickable
           @click="$emit('excluir', row)"
@@ -38,6 +40,11 @@
             <q-icon name="delete" />
           </q-item-section>
         </q-item>
+        <slot
+          v-for="slot in slotOptions"
+          :key="slot"
+          :name="`item-${slot}`"
+        />
       </q-list>
       <slot />
     </q-menu>
@@ -45,18 +52,40 @@
 </template>
 
 <script>
-export default {
+import { ref, onMounted } from 'vue'
 
+export default {
   props: {
     row: {
       type: Object,
       default: () => ({})
+    },
+
+    options: {
+      type: Array,
+      default: () => ([])
+    },
+
+    showDefaultOptions: {
+      type: Boolean, default: true
     }
   },
 
   emits: ['editar', 'excluir'],
-  setup () {
+  setup (props) {
+    const slotOptions = ref([])
 
+    watch(() => props.options, () => {
+      slotOptions.value = props.options
+    })
+
+    onMounted(() => {
+      slotOptions.value = props.options
+    })
+
+    return {
+      slotOptions
+    }
   }
 }
 </script>

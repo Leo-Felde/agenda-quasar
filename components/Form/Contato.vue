@@ -62,6 +62,12 @@
           :readonly="readonly"
         />
       </div>
+      <div class="col-4">
+        <q-checkbox
+          v-model="form.privado"
+          label="Contato privado"
+        />
+      </div>
     </div>
   </div>
 </template>
