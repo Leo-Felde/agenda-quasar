@@ -47,7 +47,6 @@
           class="q-mx-sm"
           filled
           label="Telefone"
-          mask="(##) ####-#####"
           :readonly="readonly"
         />
       </div>
