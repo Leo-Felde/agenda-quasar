@@ -12,6 +12,7 @@
           :key="`navdrawer-item-${index}`"
         >
           <q-item
+            v-show="item.adminOnly ? userAdmin : true"
             v-ripple
             clickable
             :active="item.label === 'Outbox'"
@@ -31,7 +32,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 
 export default {
   props: {
@@ -41,6 +42,13 @@ export default {
   emits: ['update:modelValue'],
   setup (props, { emit }) {
     const drawer = ref(props.modelValue)
+
+    const user = useCurrentUser()
+
+    const userAdmin = computed(() => {
+      return user.value.tipos.includes('ROLE_ADMIN')
+    })
+
     const menuList = ref([
       {
         icon: 'contact_mail',
@@ -55,7 +63,8 @@ export default {
       {
         icon: 'portrait',
         label: 'Usuários',
-        to: '/usuarios'
+        to: '/usuarios',
+        adminOnly: true
       },
       {
         icon: 'people_alt',
@@ -78,6 +87,7 @@ export default {
 
     return {
       drawer,
+      userAdmin,
       menuList
     }
   }

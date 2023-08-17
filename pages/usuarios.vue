@@ -52,6 +52,10 @@ const columns = [
 export default {
 
   setup () {
+    definePageMeta({
+      middleware: ['admin']
+    })
+
     const usuarios = ref([])
     const usuarioSelecionado = ref({})
     const loading = ref(false)

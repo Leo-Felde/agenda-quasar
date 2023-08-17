@@ -1,4 +1,6 @@
 export default defineNuxtRouteMiddleware((to) => {
+  // middleware de autenticação global
+
   const storedUser = JSON.parse(localStorage.getItem('userData'))
   const user = useCurrentUser()
 
