@@ -56,8 +56,8 @@ import { ref, onMounted, computed } from 'vue'
 
 import { isEqual, cloneDeep } from 'lodash-es'
 import { formatDate } from '~/utils/formatacao'
-import { showSuccess, showError } from '~/plugins/notify'
-import { showDiscardChanges } from '../plugins/promptDialog'
+import { showSuccess, showError } from '~/utils/notify'
+import { showDiscardChanges } from '~/utils/promptDialog'
 
 import UsuariosAPI from '~/api/usuarios'
 export default {

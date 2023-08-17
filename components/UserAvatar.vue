@@ -21,9 +21,12 @@
 <script>
 export default {
   setup () {
+    const user = useCurrentUser()
+
     const logout = () => {
-      console.log('sair')
-      return navigateTo('/auth')
+      localStorage.removeItem('userData')
+      user.value = {}
+      navigateTo('/auth')
     }
 
     return {

@@ -63,7 +63,7 @@
 <script>
 import { ref } from 'vue'
 
-import { showError } from '~/plugins/notify'
+import { showError } from '~/utils/notify'
 import { rules } from '~/utils/validationRules'
 
 import AuthAPI from '~/api/auth'

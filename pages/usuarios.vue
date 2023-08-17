@@ -36,7 +36,7 @@
 <script>
 import { ref, onMounted } from 'vue'
 
-import { showError } from '~/plugins/notify'
+import { showError } from '~/utils/notify'
 import { formatDate } from '~/utils/formatacao'
 
 import UsuariosAPI from '~/api/usuarios'

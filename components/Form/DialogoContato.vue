@@ -20,10 +20,10 @@
 import { ref, computed } from 'vue'
 
 import { isEqual, cloneDeep } from 'lodash-es'
-import { showSuccess, showError } from '~/plugins/notify'
+import { showSuccess, showError } from '~/utils/notify'
+import { showDiscardChanges, showConfirmDelete } from '~/utils/promptDialog'
 
 import ContatosAPI from '~/api/contatos'
-import { showDiscardChanges, showConfirmDelete } from '../../plugins/promptDialog'
 export default {
   props: {
     contato: {
@@ -61,6 +61,7 @@ export default {
     })
     
     const cancelar = async () => {
+      /// A MÁSCARA DE TELEFONE TA FAZENDO O TELEFONE FICAR STRING VAZIA
       if (alteracoesPendentes.value) {
         const confirm = await showDiscardChanges()
         if (confirm) conclude()

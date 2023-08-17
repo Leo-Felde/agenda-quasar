@@ -20,8 +20,8 @@
 import { ref, computed } from 'vue'
 
 import { isEqual, cloneDeep } from 'lodash-es'
-import { showSuccess, showError } from '~/plugins/notify'
-import { showDiscardChanges, showConfirmDelete } from '../../plugins/promptDialog'
+import { showSuccess, showError } from '~/utils/notify'
+import { showDiscardChanges, showConfirmDelete } from '~/utils/promptDialog'
 
 import PessoasAPI from '~/api/pessoas'
 export default {

@@ -7,6 +7,7 @@
       :rows="lista"
       :columns="columns"
       :loading="loading"
+      virtual-scroll
       row-key="field"
       @row-click="(event, row) => editarContato(row)"
     >
@@ -86,8 +87,8 @@
 <script>
 import { ref, onMounted } from 'vue'
 
-import { showSuccess, showError } from '~/plugins/notify'
-import { confirmDialog } from '../plugins/promptDialog' 
+import { showSuccess, showError } from '~/utils/notify'
+import { confirmDialog } from '~/utils/promptDialog' 
 
 import ContatosAPI from '~/api/contatos'
 import FavoritosAPI from '~/api/favoritos'

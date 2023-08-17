@@ -63,8 +63,8 @@
 <script>
 import { ref, onMounted } from 'vue'
 
-import { showSuccess, showError } from '~/plugins/notify'
-import { showConfirmDelete } from '../plugins/promptDialog'
+import { showSuccess, showError } from '~/utils/notify'
+import { showConfirmDelete } from '~/utils/promptDialog'
 
 import PessoasAPI from '~/api/pessoas'
 const columns = [
