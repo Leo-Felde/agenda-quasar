@@ -8,7 +8,7 @@
       :columns="columns"
       :loading="loading"
       row-key="field"
-      @row-click="editarContato"
+      @row-click="(event, row) => editarContato(row)"
     >
       <template #top>
         <span class="text-h6 q-my-auto">Contatos</span>
@@ -92,7 +92,7 @@ export default {
       listarContatos()
     })
 
-    const editarContato = (event, contato) => {
+    const editarContato = (contato) => {
       contatoSelecionado.value = contato
       showDialog.value = true
     }

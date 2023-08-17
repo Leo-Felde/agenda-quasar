@@ -1,13 +1,19 @@
 <template>
   <div>
-    <!-- <div class="row">
+    <div class="row">
       <div class="col-4">
-        autocomplete pessoa
+        <AutocompletePessoas
+          v-model="form.pessoa"
+          class="q-mx-sm"
+        />
       </div>
       <div class="col-4">
-        autocomplete usuario
+        <AutocompleteUsuarios
+          v-model="form.usuario"
+          class="q-mx-sm"
+        />
       </div>
-    </div> -->
+    </div>
 
     <div class="row">
       <div class="col-4">
