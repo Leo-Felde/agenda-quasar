@@ -61,6 +61,10 @@ export default {
     })
     
     const cancelar = async () => {
+      console.log('s')
+      console.log(usuarioSelecionado.value)
+      console.log('original')
+      console.log(usuarioOriginal.value)
       if (alteracoesPendentes.value) {
         const confirm = await showDiscardChanges()
         if (confirm) conclude()

@@ -23,6 +23,7 @@
     </q-header>
 
     <NavigationDrawer
+      id="navigation-drawer"
       v-model="showDrawer"
       @update:modelValue="showDrawer = $event"
     />
@@ -49,20 +50,3 @@ export default {
   }
 }
 </script>
-
-<style lang="sass" scoped>
-$bodyMargin: 18px
-$mainHeaderSize: 70px
-
-#main-header
-  display: flex
-  height: $mainHeaderSize
-
-.q-page-container
-  height: 100%
-  margin: $bodyMargin
-  padding: 28px
-
-.q-page-container
-  height: calc(100vh - $mainHeaderSize - 34) // 34 = offset do posicionamento
-</style>

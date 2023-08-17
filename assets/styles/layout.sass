@@ -1,0 +1,18 @@
+$bodyMargin: 18px
+$mainHeaderSize: 70px
+$offset: 34px // alguns componentes internos possuem padding por padrão, esse offset referencia isso mas não e utilizado
+  
+#main-header
+  display: flex
+  height: $mainHeaderSize
+
+.q-page-container
+  height: 100%
+  margin: $bodyMargin
+  padding: 28px
+
+.q-page-container
+  max-height: calc(100vh - $mainHeaderSize - $offset)
+
+.q-table__container 
+  max-height: calc(100vh - $mainHeaderSize - $offset)

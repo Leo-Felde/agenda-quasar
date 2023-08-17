@@ -2,10 +2,20 @@
   height: inherit
 
 #__nuxt
-  background: #f6fdff
-  
+  max-height: inherit
+
 .q-layout
   overflow: hidden
 
 html, body
   height: 100vh
+  max-height: 100vh
+.d-flex
+  display: flex
+
+body
+  &.body
+    &--dark
+      background: #082b35
+    &--light
+      background: #f6fdff
