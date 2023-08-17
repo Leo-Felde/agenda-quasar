@@ -27,12 +27,7 @@
       <template #body-cell-nome="props">
         <q-td :props="props">
           <div>
-            <q-avatar
-              size="48px"
-              class="cursor-pointer"
-            >
-              <img :src="`https://d2ph5fj80uercy.cloudfront.net/04/cat${props.row.id * 195}.jpg`">
-            </q-avatar>
+            <PessoaAvatar :id="props.row.pessoa.id" />
             {{ props.row.pessoa.nome }}
           </div>
         </q-td>
