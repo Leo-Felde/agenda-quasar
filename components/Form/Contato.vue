@@ -1,25 +1,22 @@
 <template>
-  <div>
-    <div class="row">
-      <div class="col-4">
+  <div class="q-px-md">
+    <div class="row q-col-gutter-md">
+      <div class="responsive-col-4">
         <AutocompletePessoas
           v-model="form.pessoa"
-          class="q-mx-sm"
         />
       </div>
-      <div class="col-4">
+      <div class="responsive-col-4">
         <AutocompleteUsuarios
           v-model="form.usuario"
-          class="q-mx-sm"
         />
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-4">
+    <div class="row q-col-gutter-md">
+      <div class="responsive-col-4">
         <q-select
           v-model="form.tipoContato"
-          class="q-mx-sm"
           filled
           label="Forma de contato *"
           option-label="text"
@@ -31,37 +28,35 @@
           :rules="[rules.obrigatorio]"
         />
       </div>
-      <div class="col-4">
+      <div class="responsive-col-4">
         <q-input
           v-model="form.email"
-          class="q-mx-sm"
           filled
           label="E-mail"
           :rules="[rules.email]"
           :readonly="readonly"
         />
       </div>
-      <div class="col-4">
+      <div class="responsive-col-4">
         <q-input
           v-model="form.telefone"
-          class="q-mx-sm"
           filled
           label="Telefone"
           :readonly="readonly"
+          :error="false"
         />
       </div>
     </div>
-    <div class="row">
-      <div class="col-4">
+    <div class="row q-col-gutter-md">
+      <div class="responsive-col-4">
         <q-input
           v-model="form.tag"
-          class="q-mx-sm"
           filled
           label="Tag"
           :readonly="readonly"
         />
       </div>
-      <div class="col-4">
+      <div class="responsive-col-4">
         <q-checkbox
           v-model="form.privado"
           label="Contato privado"
@@ -73,7 +68,6 @@
 
 <script>
 import { ref, onMounted } from 'vue'
-
 import { rules } from '~/utils/validationRules'
 export default {
 

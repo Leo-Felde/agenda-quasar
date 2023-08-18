@@ -40,6 +40,13 @@
         </q-td>
       </template>
 
+      <template #body-cell-tipoContato="props">
+        <q-td :props="props">
+          <span v-if="isMobile">Forma de contato:</span>
+          {{ props.row.tipoContato }}
+        </q-td>
+      </template>
+
       <template #body-cell-actions="props">
         <q-td :props="props">
           <tableOptionsBtn
@@ -86,6 +93,7 @@
 
 <script>
 import { ref, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
 
 import { showSuccess, showError } from '~/utils/notify'
 import { confirmDialog } from '~/utils/promptDialog' 
@@ -94,7 +102,7 @@ import ContatosAPI from '~/api/contatos'
 import FavoritosAPI from '~/api/favoritos'
 const columns = [
   { name: 'nome', field: 'contato.nome', label: 'Nome', align: 'left', sortable: true },
-  { field: 'tipoContato', label: 'Forma de contato', align: 'center', sortable: true },
+  { name: 'tipoContato', field: 'tipoContato', label: 'Forma de contato', align: 'center', sortable: true },
   { field: 'telefone', label: 'Telefone', sortable: true },
   { field: 'email', label: 'E-mail', sortable: true },
   { name: 'endereco', field: 'contato.endereco', label: 'Endereço' },
@@ -114,6 +122,12 @@ export default {
     const contatoSelecionado = ref({})
     const loading = ref(false)
     const showDialog = ref(false)
+
+    const $q = useQuasar()
+
+    const isMobile = computed(() => {
+      return $q.platform.is.mobile
+    })
 
     onMounted(() => {
       listarTodos()
@@ -216,6 +230,7 @@ export default {
       loading,
       lista,
       contatoSelecionado,
+      isMobile,
       listarTodos,
       editarContato,
       novoContato,

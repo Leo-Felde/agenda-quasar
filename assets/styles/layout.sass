@@ -16,3 +16,35 @@ $offset: 34px // alguns componentes internos possuem padding por padrão, esse o
 
 .q-table__container 
   max-height: calc(100vh - $mainHeaderSize - $offset)
+
+
+@media (max-width: 768px)
+  .q-table
+    thead
+      display: none !important
+    tbody, tr, td
+      display: block !important
+      width: 100% !important
+    td
+      border: none !important
+      text-align: start !important
+      &:empty
+        display: none !important
+    tr
+      border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity))
+
+.responsive-col
+  &-4
+    flex: 0 0 auto
+    width: 33.33%
+    height: auto
+    @media (max-width: 900px)
+      width: 50% !important
+    @media (max-width: 600px)
+      width: 100% !important
+  &-6
+    flex: 0 0 auto
+    width: 50%
+    height: auto
+    @media (max-width: 900px)
+      width: 100% !important

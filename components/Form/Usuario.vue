@@ -1,30 +1,27 @@
 <template>
-  <div>
-    <div class="row">
-      <div class="col-4">
+  <div class="q-px-md">
+    <div class="row q-col-gutter-md">
+      <div class="responsive-col-4">
         <q-input
           v-model="form.nome"
-          class="q-mx-sm"
           filled
           label="Nome *"
           :rules="[rules.obrigatorio]"
           :readonly="readonly"
         />
       </div>
-      <div class="col-4">
+      <div class="responsive-col-4">
         <q-input
           v-model="form.username"
-          class="q-mx-sm"
           filled
           label="Nome de usuário *"
           :rules="[rules.obrigatorio]"
           :readonly="readonly"
         />
       </div>
-      <div class="col-4">
+      <div class="responsive-col-4">
         <q-input
           v-model="form.cpf"
-          class="q-mx-sm"
           filled
           label="Cpf *"
           mask="###.###.###-##"
@@ -34,11 +31,10 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-4">
+    <div class="row q-col-gutter-md">
+      <div class="responsive-col-4">
         <q-input
           v-model="form.dataNascimento"
-          class="q-mx-sm"
           filled
           label="Data de nascimento"
           mask="##/##/####"
@@ -74,23 +70,21 @@
           </template>
         </q-input>
       </div>
-      <div class="col-4">
+      <div class="responsive-col-4">
         <q-input
           v-model="form.email"
-          class="q-mx-sm"
           filled
           label="E-mail"
           :rules="[rules.email]"
           :readonly="readonly"
         />
       </div>
-      <div class="col-4">
+      <div class="responsive-col-4">
         <q-input
           v-model="form.telefone"
-          class="q-mx-sm"
           filled
           label="Telefone"
-          mask="(##) ####-#####"
+          :error="false"
           :readonly="readonly"
         />
       </div>
@@ -98,12 +92,11 @@
 
     <div
       v-if="form.tipos"
-      class="row"
+      class="row q-col-gutter-md"
     >
-      <div class="col-4">
+      <div class="responsive-col-4">
         <q-select
           v-model="form.tipos"
-          class="q-mx-sm"
           filled
           label="Tipo de Usuário *"
           option-label="text"
@@ -121,12 +114,11 @@
     />
     <div
       v-if="showPasswordField"
-      class="row"
+      class="row q-col-gutter-md"
     >
-      <div class="col-4">
+      <div class="responsive-col-4">
         <q-input
           v-model="form.password"
-          class="q-mx-sm"
           filled
           label="Senha *"
           :type="showPassword ? 'text' : 'password'"
@@ -142,10 +134,9 @@
           </template>
         </q-input>
       </div>
-      <div class="col-4">
+      <div class="responsive-col-4">
         <q-input
           v-model="confirmPassword"
-          class="q-mx-sm"
           filled
           label="Confirmar Senha *"
           :type="showPassword ? 'text' : 'password'"
@@ -171,6 +162,8 @@ export default {
     readonly: Boolean,
     showPasswordField: Boolean
   },
+
+  
 
   setup (props) {
     const form = ref({})
