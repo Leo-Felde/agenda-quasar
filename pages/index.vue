@@ -101,11 +101,11 @@ import { confirmDialog } from '~/utils/promptDialog'
 import ContatosAPI from '~/api/contatos'
 import FavoritosAPI from '~/api/favoritos'
 const columns = [
-  { name: 'nome', field: 'contato.nome', label: 'Nome', align: 'left', sortable: true },
+  { name: 'nome', field: 'pessoa.nome', label: 'Nome', align: 'left', sortable: true },
   { name: 'tipoContato', field: 'tipoContato', label: 'Forma de contato', align: 'center', sortable: true },
-  { field: 'telefone', label: 'Telefone', sortable: true },
-  { field: 'email', label: 'E-mail', sortable: true },
-  { name: 'endereco', field: 'contato.endereco', label: 'Endereço' },
+  { name: 'telefone', field: 'telefone', label: 'Telefone', sortable: true },
+  { name: 'email', field: 'email', label: 'E-mail', sortable: true },
+  { name: 'endereco', field: 'pessoa.endereco', label: 'Endereço', sortable: true },
   { name: 'actions', align: 'center', label: 'Ações'}
 ]
 

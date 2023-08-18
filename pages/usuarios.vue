@@ -41,12 +41,12 @@ import { formatDate } from '~/utils/formatacao'
 
 import UsuariosAPI from '~/api/usuarios'
 const columns = [
-  { field: 'nome', label: 'Nome', align: 'left', sortable: true },
-  { field: 'username', label: 'Nome de usuário', align: 'center', sortable: true },
-  { field: 'cpf', label: 'Cpf', sortable: true },
-  { field: 'email', label: 'E-mail', sortable: true },
-  { field: 'telefone', label: 'Telefone' },
-  { field: 'dataNascimento', label: 'Data de nascimento' }
+  { name: 'nome', field: 'nome', label: 'Nome', align: 'left', sortable: true },
+  { name: 'username', field: 'username', label: 'Nome de usuário', align: 'center', sortable: true },
+  { name: 'cpf', field: 'cpf', label: 'Cpf', sortable: true },
+  { name: 'email', field: 'email', label: 'E-mail', sortable: true },
+  { name: 'telefone', field: 'telefone', label: 'Telefone', sortable: true },
+  { name: 'dataNascimento', field: 'dataNascimento', label: 'Data de nascimento', sortable: true }
 ]
 
 export default {

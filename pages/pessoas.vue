@@ -68,9 +68,9 @@ import { showConfirmDelete } from '~/utils/promptDialog'
 
 import PessoasAPI from '~/api/pessoas'
 const columns = [
-  { name: 'nome', field: 'pessoa.nome', label: 'Nome', align: 'left', sortable: true },
-  { field: 'cpf', label: 'Cpf', align: 'left', sortable: true },
-  { name: 'endereco', field: 'pessoa.endereco', align: 'left', label: 'Endereço' },
+  { name: 'nome', field: 'nome', label: 'Nome', align: 'left', sortable: true },
+  { name: 'cpf', field: 'cpf', label: 'Cpf', align: 'left', sortable: true },
+  { name: 'endereco', field: 'endereco.bairro', label: 'Endereço', align: 'left', sortable: true },
   { name: 'actions', align: 'center', label: 'Ações'}
 ]
 
