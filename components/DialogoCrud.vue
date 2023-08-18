@@ -107,6 +107,6 @@ export default {
 
 <style lang="sass" scoped>
 .dialogo-crud__body
-  max-width: 600px
+  max-width: 800px
   width: 100%
 </style>

@@ -1,12 +1,12 @@
 <template>
   <div class="q-px-md">
     <div class="row q-col-gutter-md">
-      <div class="responsive-col-4">
+      <div class="responsive-col-6">
         <AutocompletePessoas
           v-model="form.pessoa"
         />
       </div>
-      <div class="responsive-col-4">
+      <div class="responsive-col-6">
         <AutocompleteUsuarios
           v-model="form.usuario"
         />
