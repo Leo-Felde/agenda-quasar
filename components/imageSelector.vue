@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="image-selector">
     <q-card
       class="result-image"
       flat
@@ -7,8 +7,10 @@
     >
       <q-img
         :src="resultImage"
+        placeholder-src="https://t3.ftcdn.net/jpg/02/68/55/60/360_F_268556012_c1WBaKFN5rjRxR2eyV33znK4qnYeKZjm.jpg"
+        fit="fill"
       >
-        <div class="image-selector">
+        <div class="change-image-overlay">
           <q-btn
             icon="image"
             round
@@ -31,7 +33,7 @@
       <cropper
         ref="cropper"
         class="q-mx-auto"
-        :src="selectedFile"
+        :src="selectedFile || 'https://t3.ftcdn.net/jpg/02/68/55/60/360_F_268556012_c1WBaKFN5rjRxR2eyV33znK4qnYeKZjm.jpg'"
         :stencil-props="{
           aspectRatio: 1,
           class: 'cropper-stencil'
@@ -69,13 +71,25 @@ export default {
     Cropper,
   },
 
+  props: {
+    modelValue: {
+      type: String,
+      default: ''
+    }
+  },
 
-  setup () {
-    const selectedFile = ref('https://images.unsplash.com/photo-1619737307100-55b82496fcda?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80')
-    const resultImage = ref('https://images.unsplash.com/photo-1619737307100-55b82496fcda?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80')
+  emits: ['update:modelValue'],
+  setup (props, { emit }) {
+    const selectedFile = ref('')
+    const resultImage = ref('')
+    
     const cropper = ref(null)
     const showDialog = ref(false)
     const showCameraDialog = ref(false)
+
+    watch(() => props.modelValue, (newValue) => {
+      resultImage.value = newValue
+    })
 
     const onFileSelect = (event) => {
       if (!event.target.files.length) {
@@ -89,7 +103,7 @@ export default {
           selectedFile.value = res
         })
       } else {
-        console.error('Sorry, FileReader API not supported')
+        console.error('FileReader API not supported')
       }
     }
 
@@ -107,6 +121,7 @@ export default {
     const salvarImagem = () => {
       const { canvas } = cropper.value.getResult()
       resultImage.value = canvas.toDataURL()
+      emit('update:modelValue', resultImage.value)
     }
 
     const usarFoto = (fotoStream) => {
@@ -129,14 +144,18 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.vue-advanced-cropper, .result-image .q-img
+.result-image .q-img
   $size: 150px
   height: $size
   width: $size
 
+.vue-advanced-cropper
+  height: 250px
+  width: 250px
+
 .result-image
   width: fit-content
-.image-selector
+.change-image-overlay
   height: 100%
   width: 100%
   display: flex
