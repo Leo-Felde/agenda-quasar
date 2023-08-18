@@ -3,7 +3,10 @@
     v-model="showDialog"
     persistent
   >
-    <q-card style="max-width: 800px; width: 100%">
+    <q-card
+      :class="contentClass"
+      class="dialogo-crud__body"
+    >
       <div class="row q-pa-sm justify-center">
         <span class="text-h6 q-my-auto"> {{ title }} </span> 
         <q-space />
@@ -55,8 +58,18 @@ export default {
   props: {
     modelValue: Boolean,
     showDeleteBtn: Boolean,
-    showSaveBtn: { type: Boolean, default: true},
-    title: { type: String, default: 'Titulo' }
+    showSaveBtn: {
+      type: Boolean,
+      default: true
+    },
+    title: {
+      type: String,
+      default: 'Titulo'
+    },
+    contentClass: {
+      type: String,
+      default: ''
+    }
   },
 
   emits: ['update:modelValue', 'salvar', 'cancelar', 'excluir'],
@@ -81,11 +94,6 @@ export default {
       emit('salvar')
     }
 
-    // const conclude = () => {
-    //   emit('update:modelValue', false)
-    //   form.value.reset() 
-    // }
-
     return {
       form,
       showDialog,
@@ -96,3 +104,9 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.dialogo-crud__body
+  max-width: 600px
+  width: 100%
+</style>
