@@ -12,7 +12,25 @@
     >
       <template #top>
         <span class="text-h6 q-my-auto">Usuários</span>
-
+        <q-input
+          v-model="search"
+          class="q-ml-sm"
+          dense
+          rounded
+          standout
+          clearable
+          placeholder="Pesquisar"
+          @keyup.enter="listarUsuarios(true)"
+          @clear="listarUsuarios()"
+        >
+          <template #append>
+            <q-icon
+              name="search"
+              class="cursor-pointer"
+              @click="listarUsuarios(true)"
+            />
+          </template>
+        </q-input>
         <q-space />
 
         <q-btn
@@ -55,7 +73,8 @@ export default {
     definePageMeta({
       middleware: ['admin']
     })
-
+    
+    const search = ref('')
     const usuarios = ref([])
     const usuarioSelecionado = ref({})
     const loading = ref(false)
@@ -75,11 +94,11 @@ export default {
       showDialog.value = true
     }
 
-    const listarUsuarios = async () => {
+    const listarUsuarios = async (useSearch = false) => {
       loading.value = true
 
       try {
-        const param = { termo: ''}
+        const param = { termo: useSearch ? search.value || '' : ''}
         const resp = await UsuariosAPI.pesquisar(param)
 
         usuarios.value = resp.data.map(usuario => {
@@ -97,6 +116,7 @@ export default {
     
     return {
       columns,
+      search,
       showDialog,
       loading,
       usuarios,

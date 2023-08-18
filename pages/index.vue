@@ -14,6 +14,25 @@
       <template #top>
         <span class="text-h6 q-my-auto">Contatos</span>
 
+        <q-input
+          v-model="search"
+          class="q-ml-sm"
+          rounded
+          standout
+          dense
+          clearable
+          placeholder="Pesquisar"
+          @keyup.enter="listarTodos(true)"
+          @clear="listarTodos()"
+        >
+          <template #append>
+            <q-icon
+              name="search"
+              class="cursor-pointer"
+              @click="listarTodos(true)"
+            />
+          </template>
+        </q-input>
         <q-space />
 
         <q-btn
@@ -116,6 +135,7 @@ const extraActions = [
 export default {
 
   setup () {
+    const search = ref('')
     const contatos = ref([])
     const favoritos = ref([])
     const lista = ref([])
@@ -173,11 +193,11 @@ export default {
       }
     }
 
-    const listarContatos = async () => {
+    const listarContatos = async (useSearch = false) => {
       loading.value = true
 
       try {
-        const param = { termo: ''}
+        const param = { termo: useSearch ? search.value || '' : ''}
         const resp = await ContatosAPI.pesquisar(param)
 
         contatos.value = resp.data
@@ -190,12 +210,18 @@ export default {
     }
 
     const listarTodos = async (useSearch = false) => {
-      await listarContatos(useSearch)
-      await listarFavoritos()
-      lista.value = contatos.value.map(contato => ({
-        ...contato,
-        favorito: favoritos.value.has(contato.id)
-      }))
+      await listarContatos()
+      if (useSearch) {
+        await listarContatos(true)
+        lista.value = contatos.value
+      } else {
+        await listarContatos()
+        await listarFavoritos()
+        lista.value = contatos.value.map(contato => ({
+          ...contato,
+          favorito: favoritos.value.has(contato.id)
+        }))
+      }
     }
 
     const toggleFavorito = async (contato) => {
@@ -226,6 +252,7 @@ export default {
     return {
       columns,
       extraActions,
+      search,
       showDialog,
       loading,
       lista,

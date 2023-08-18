@@ -17,5 +17,20 @@ body
   &.body
     &--dark
       background: #082b35
+      .q-field--standout input, .q-field__append
+        color: white !important
     &--light
       background: #f6fdff
+      .q-field--standout input, .q-field__append
+        color: black !important
+
+.q-field--standout .q-field__control
+  background: #e7e7e7a3 !important
+  box-shadow: none !important
+
+.autocomplete
+  display: flex
+  .q-field
+    flex-grow: 1
+  .q-btn
+    flex-grow: 0

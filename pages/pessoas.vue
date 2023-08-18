@@ -12,7 +12,25 @@
     >
       <template #top>
         <span class="text-h6 q-my-auto">Pessoas</span>
-
+        <q-input
+          v-model="search"
+          class="q-ml-sm"
+          rounded
+          standout
+          dense
+          clearable
+          placeholder="Pesquisar"
+          @keyup.enter="listarPessoas(true)"
+          @clear="listarPessoas()"
+        >
+          <template #append>
+            <q-icon
+              name="search"
+              class="cursor-pointer"
+              @click="listarPessoas(true)"
+            />
+          </template>
+        </q-input>
         <q-space />
 
         <q-btn
@@ -77,6 +95,7 @@ const columns = [
 export default {
 
   setup () {
+    const search = ref('')
     const pessoas = ref([])
     const pessoaSelecionado = ref({endereco: {}})
     const loading = ref(false)
@@ -111,11 +130,11 @@ export default {
       }
     }
 
-    const listarPessoas = async () => {
+    const listarPessoas = async (useSearch = false) => {
       loading.value = true
 
       try {
-        const param = { nome: ''}
+        const param = { nome: useSearch ? search.value || '' : ''}
         const resp = await PessoasAPI.pesquisar(param)
 
         pessoas.value = resp.data
@@ -129,6 +148,7 @@ export default {
     
     return {
       columns,
+      search,
       showDialog,
       loading,
       pessoas,
