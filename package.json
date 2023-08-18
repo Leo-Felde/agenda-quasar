@@ -22,6 +22,7 @@
     "@quasar/extras": "^1.16.5",
     "lodash-es": "^4.17.21",
     "nuxt-quasar-ui": "^2.0.5",
-    "quasar": "^2.12.4"
+    "quasar": "^2.12.4",
+    "vue-advanced-cropper": "^2.8.8"
   }
 }
