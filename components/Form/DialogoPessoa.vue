@@ -72,6 +72,7 @@ export default {
     const salvar = async () => {
       if (!formulario.value.validate()) return
       if (!alteracoesPendentes.value) {
+        emit('atualizar')
         conclude()
         return
       }

@@ -85,15 +85,22 @@ export default {
         showError('Não foi possivel pesquisar pessoas')
       }
     }
+
     const selecionarPessoa = () => {
       emit('update:modelValue', pessoaSelecionada.value)
     }
 
     const adicionarNovaPessoa = (novaPessoa) => {
       pessoas.value.push(novaPessoa.object)
-      setTimeout(() => {
+
+      setTimeout(() => { // garante que o array já foi preenchido
         pessoaSelecionada.value = novaPessoa.object
-      }, 100)
+      }, 100) 
+
+      setTimeout(() => { // garante que o valor já existe
+        selecionarPessoa()
+      }, 200)
+      selecionarPessoa()
     }
 
     return {

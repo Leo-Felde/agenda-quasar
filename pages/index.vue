@@ -48,7 +48,10 @@
       <template #body-cell-nome="props">
         <q-td :props="props">
           <div>
-            <PessoaAvatar :id="props.row.pessoa.id" />
+            <PessoaAvatar
+              :id="props.row.pessoa.id"
+              :key="props.row.pessoa.id"
+            />
             {{ props.row.pessoa.nome }}
             <q-icon
               v-if="props.row.favorito"

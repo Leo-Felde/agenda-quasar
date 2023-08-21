@@ -137,6 +137,7 @@ export default {
       const { canvas } = cropper.value.getResult()
       resultImage.value = canvas.toDataURL()
       emit('update:modelValue', resultImage.value)
+      showDialog.value = false
     }
 
     const usarFoto = (fotoStream) => {
@@ -184,6 +185,7 @@ export default {
 
 .file-name
   max-width: 120px
+  width: 100% !important
   display: ruby
   overflow: hidden
   text-overflow: ellipsis

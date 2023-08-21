@@ -8,6 +8,8 @@
 <script>
 import { ref, onMounted } from 'vue'
 
+import { showSuccess, showError } from '~/utils/notify'
+
 import ImagemAPI from '~/api/imagem'
 export default {
   props: {
@@ -50,8 +52,10 @@ export default {
         formData.append('foto', blob)
 
         await ImagemAPI.enviar(props.id, formData)
+        showSuccess('Imagem enviada com sucesso')
       } catch (error) {
         console.error(error)
+        showError('Não foi possivel enviar a imagem')
       }
     }
 
