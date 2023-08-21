@@ -1,5 +1,5 @@
 <template>
-  <div class="image-selector">
+  <div :class="`image-selector${$q.screen.lt.md ? '-mobile' : ''}`">
     <q-card
       class="result-image"
       flat
@@ -33,24 +33,38 @@
       <cropper
         ref="cropper"
         class="q-mx-auto"
-        :src="selectedFile || 'https://t3.ftcdn.net/jpg/02/68/55/60/360_F_268556012_c1WBaKFN5rjRxR2eyV33znK4qnYeKZjm.jpg'"
+        :src="selectedImage || 'https://t3.ftcdn.net/jpg/02/68/55/60/360_F_268556012_c1WBaKFN5rjRxR2eyV33znK4qnYeKZjm.jpg'"
         :stencil-props="{
           aspectRatio: 1,
           class: 'cropper-stencil'
         }"
       />
-      <div class="d-flex q-pa-sm">
+      <div class="q-pa-sm d-flex justify-center img-actions">
         <q-btn
           flat
-          round
-          icon="photo_camera"
+          icon-right="photo_camera"
+          dense
           @click="showCameraDialog = true"
-        />
-        <input
-          class="q-mt-sm"
-          type="file"
-          @input="onFileSelect"
         >
+          tirar uma foto
+        </q-btn>
+        <span class="q-px-md text-h6 q-my-auto"> ou </span>
+        <q-file
+          v-model="selectedFile"
+          filled
+          label="Procurar imagem"
+          clearable
+          dense
+          accept=".jpg, image/*"
+          @update:modelValue="onFileSelect"
+        >
+          <template #prepend>
+            <q-icon name="attach_file" />
+          </template>
+          <template #file>
+            <span class="file-name"> {{ selectedFile.name }} </span>
+          </template>
+        </q-file>
       </div>
     </DialogoCrud>
     
@@ -81,6 +95,7 @@ export default {
   emits: ['update:modelValue'],
   setup (props, { emit }) {
     const selectedFile = ref('')
+    const selectedImage = ref('')
     const resultImage = ref('')
     
     const cropper = ref(null)
@@ -91,16 +106,16 @@ export default {
       resultImage.value = newValue
     })
 
-    const onFileSelect = (event) => {
-      if (!event.target.files.length) {
+    const onFileSelect = () => {
+      if (!selectedFile.value) {
         return
       }
-
-      const file = event.target.files[0]
+      
+      const file = selectedFile.value
       if (typeof FileReader === 'function') {
         const res = readAsDataURL(file)
         res.then((res) => {
-          selectedFile.value = res
+          selectedImage.value = res
         })
       } else {
         console.error('FileReader API not supported')
@@ -125,11 +140,12 @@ export default {
     }
 
     const usarFoto = (fotoStream) => {
-      selectedFile.value = fotoStream
+      selectedImage.value = fotoStream
     }
 
     return {
       selectedFile,
+      selectedImage,
       resultImage,
       cropper,
       showDialog,
@@ -165,12 +181,23 @@ export default {
   transition: 600ms
   &:hover
     opacity: 100%
+
+.file-name
+  max-width: 120px
+  display: ruby
+  overflow: hidden
+  text-overflow: ellipsis
 </style>
 
 <style lang="sass">
 .imagem-selector-dialog
-  max-width: 300px !important
+  max-width: 500px !important
   display: flex
   flex-direction: column
 
+.q-field__native
+  div
+    max-width: 100px
+    overflow: hidden
+    text-overflow: ellipsis
 </style>

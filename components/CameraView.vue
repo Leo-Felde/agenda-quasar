@@ -1,8 +1,5 @@
 <template>
-  <q-dialog
-    v-model="showDialog"
-    persistent
-  >
+  <q-dialog v-model="showDialog">
     <q-card>
       <div class="video-container">
         <video
@@ -23,32 +20,55 @@
           :height="337"
         />
       </div>
-      <div class="d-flex justify-center q-py-sm">
-        <q-btn
-          v-if="!isPhotoTaken && isCameraOpen"
-          color="primary"
-          icon-right="add_a_photo"
-          @click="takePhoto"
+      <div
+        v-if="isCameraOpen"
+        class="q-py-sm"
+      >
+        <div
+          v-if="!isPhotoTaken"
+          class="d-flex q-mx-md"
         >
-          <span>Fotografar</span>
-        </q-btn>
+          <q-btn
+            icon="close"
+            flat
+            fab
+            style="position: absolute"
+            @click="$emit('update:modelValue', false)"
+          />
+          <q-btn
+            class="q-mx-auto"
+            icon="photo_camera"
+            flat
+            fab
+            @click="takePhoto"
+          />
+        </div>
+        <div
+          v-else
+          class="d-flex justify-between q-mx-md"
+        >
+          <q-btn
+            icon="close"
+            flat
+            fab
+            @click="isPhotoTaken = false"
+          />
+          <q-btn
+            class="camera-download"
+            icon="check"
+            flat
+            fab
+            @click="downloadImage"
+          />
+        </div>
+      </div>
+      <div v-else>
         <q-btn
-          v-show="isPhotoTaken && isCameraOpen"
-          class="camera-download q-pr-sm"
-          icon-right="refresh"
+          round
           flat
-          @click="isPhotoTaken = false"
+          @click="$emit('update:modelValue', false)"
         >
-          Tentar novamente
-        </q-btn>
-        <q-btn
-          v-show="isPhotoTaken && isCameraOpen"
-          class="camera-download"
-          icon-right="check"
-          color="primary"
-          @click="downloadImage"
-        >
-          Usar essa foto
+          cancelar
         </q-btn>
       </div>
     </q-card>
