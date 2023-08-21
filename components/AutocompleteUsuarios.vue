@@ -92,8 +92,6 @@ export default {
     }
 
     const adicionarNovoUsuario = (novoUsuario) => {
-      console.log('novo usuario')
-      console.log(novoUsuario)
       usuarios.value.push(novoUsuario.object)
       setTimeout(() => {
         usuarioSelecionada.value = novoUsuario.object

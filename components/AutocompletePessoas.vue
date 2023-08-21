@@ -82,7 +82,6 @@ export default {
       }
     }
     const selecionarPessoa = () => {
-      console.log('pessoa selecionada')
       emit('update:modelValue', pessoaSelecionada.value)
     }
 
