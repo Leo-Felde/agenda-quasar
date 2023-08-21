@@ -27,7 +27,7 @@ import ContatosAPI from '~/api/contatos'
 export default {
   props: {
     contato: {
-      type: Object, default: () => ({})
+      type: Object, default: () => ({ privado: false })
     },
 
     modelValue: Boolean
@@ -120,7 +120,7 @@ export default {
     }
 
     const conclude = () => {
-      contatoOriginal.value = {}
+      contatoOriginal.value = { privado: false }
       contatoSelecionado.value = cloneDeep(contatoOriginal.value)
       formulario.value.resetValidation()
       emit('update:modelValue', false)

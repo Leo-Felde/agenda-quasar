@@ -38,8 +38,8 @@ export default {
     const loading = ref(false)
     const formulario = ref(null)
     const showDialog = ref(false)
-    const usuarioSelecionado = ref({tipos: ['ROLE_USER']})
-    const usuarioOriginal = ref({tipos: ['ROLE_USER']})
+    const usuarioSelecionado = ref({tipos: 'ROLE_USER'})
+    const usuarioOriginal = ref({tipos: 'ROLE_USER'})
 
     const alteracoesPendentes = computed(() => {
       return !isEqual(usuarioSelecionado.value, usuarioOriginal.value)
@@ -113,7 +113,7 @@ export default {
     }
 
     const conclude = () => {
-      usuarioOriginal.value = { tipos: ['ROLE_USER'] }
+      usuarioOriginal.value = { tipos: 'ROLE_USER' }
       usuarioSelecionado.value = cloneDeep(usuarioOriginal.value)
       formulario.value.resetValidation()
       emit('update:modelValue', false)

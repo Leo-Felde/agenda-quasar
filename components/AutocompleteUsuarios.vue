@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex autocomplete">
+  <div>
     <q-select
       v-model="usuarioSelecionado"
       label="usuario"
@@ -18,15 +18,19 @@
           </q-item-section>
         </q-item>
       </template>
-    </q-select>
 
-    <q-btn
-      v-if="userAdmin"
-      class="q-ml-sm add-btn"
-      icon="add"
-      color="primary"
-      @click="showDialogCrud = true"
-    />
+      <template #append>
+        <q-btn
+          v-if="userAdmin"
+          class="q-ml-sm add-btn"
+          icon="add"
+          color="primary"
+          dense
+          round
+          @click.stop.prevent="showDialogCrud = true"
+        />
+      </template>
+    </q-select>
 
     <FormDialogoUsuario
       v-model="showDialogCrud"
