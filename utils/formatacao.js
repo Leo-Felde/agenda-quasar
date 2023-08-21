@@ -15,6 +15,6 @@ export function formatDate(inputDate, input = true) {
   if (input) {
     return `${day}/${month}/${year}`
   } else {
-    return `${year}-${day}-${month}`
+    return `${year}-${month}-${day}`
   }
 }
