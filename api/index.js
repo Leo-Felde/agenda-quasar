@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { navigateTo } from 'nuxt/app'
 
 const AppURL = 'https://demometaway.vps-kinghost.net:8487/api'
 
@@ -18,6 +19,16 @@ const createAPI = (routeURL, responseType = 'json') => {
 
     return config
   })
+
+  api.interceptors.response.use(undefined,
+    (error) => {
+      if (error.response.status === 401) {
+        localStorage.removeItem('userData')
+        return navigateTo('/auth')
+      }
+      
+      return Promise.reject(error)
+    })
 
   return api
 }
