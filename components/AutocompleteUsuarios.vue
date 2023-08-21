@@ -97,9 +97,15 @@ export default {
 
     const adicionarNovoUsuario = (novoUsuario) => {
       usuarios.value.push(novoUsuario.object)
+
       setTimeout(() => {
         usuarioSelecionada.value = novoUsuario.object
-      }, 100)
+      }, 100) 
+
+      setTimeout(() => {
+        selecionarUsuario()
+      }, 200)
+      selecionarUsuario()
     }
 
     return {
