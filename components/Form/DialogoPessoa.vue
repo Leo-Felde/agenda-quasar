@@ -77,9 +77,10 @@ export default {
       }
 
       try {
-        await PessoasAPI.salvar(pessoaSelecionada.value)
+        const resp = await PessoasAPI.salvar(pessoaSelecionada.value)
+
         showSuccess(props.pessoa.id ? 'Pessoa atualizada' : 'Pessoa cadastrada')
-        emit('atualizar')
+        emit('atualizar', resp.data)
         conclude()
       } catch (error) {
         console.error(error)

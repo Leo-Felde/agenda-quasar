@@ -78,10 +78,10 @@ export default {
       }
 
       try {
-        await ContatosAPI.salvar(contatoSelecionado.value)
+        const resp = await ContatosAPI.salvar(contatoSelecionado.value)
 
         showSuccess(props.contato.id ? 'Contato atualizado' : 'Contato cadastrado')
-        emit('atualizar')
+        emit('atualizar', resp.data)
         conclude()
       } catch (error) {
         console.error(error)
