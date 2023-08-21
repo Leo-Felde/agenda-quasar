@@ -1,11 +1,11 @@
 export default defineNuxtRouteMiddleware((to) => {
   // middleware de autenticação global
 
-  const storedUser = JSON.parse(localStorage.getItem('userData'))
+  const storedUser = localStorage.getItem('userData')
   const user = useCurrentUser()
 
-  if (!user?.value && storedUser) {
-    user.value = storedUser
+  if (!user && storedUser) {
+    user.value = JSON.parse(storedUser)
   }
 
   const isAuthPage = to.fullPath.includes('/auth')

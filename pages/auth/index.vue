@@ -139,6 +139,8 @@ export default {
 #login-card
   width: 100%
   max-width: 400px
+  margin-right: 20px
+  margin-left: 20px
 
 .invalid-credentials
   border: 1px solid red !important
