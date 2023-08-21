@@ -94,7 +94,7 @@ export default {
 
   emits: ['update:modelValue'],
   setup (props, { emit }) {
-    const selectedFile = ref('')
+    const selectedFile = ref(null)
     const selectedImage = ref('')
     const resultImage = ref('')
     

@@ -6,27 +6,22 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 import ImagemAPI from '~/api/imagem'
 export default {
   props: {
-    modelValue: {
-      type: Object,
-      default: () => ({})
-    },
     id: {
       type: [String, Number],
       default: ''
     }
   },
 
-  emits: ['update:modelValue'],
   setup (props) {
     const image = ref('')
     
-    watch(() => props.id, (newValue) => {
-      if (newValue) getImage()
+    onMounted(() => {
+      getImage()
     })
 
     const getImage = async () => {
@@ -55,7 +50,6 @@ export default {
         formData.append('foto', blob)
 
         await ImagemAPI.enviar(props.id, formData)
-        image.value = imageUrl
       } catch (error) {
         console.error(error)
       }

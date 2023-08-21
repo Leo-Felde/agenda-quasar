@@ -89,10 +89,7 @@
       v-if="form.id"
       :class="$q.screen.lt.md ? 'q-my-auto q-py-sm' : 'q-pl-md q-mt-auto q-pb-sm'"
     >
-      <PessoaImagemSelector
-        :id="form.id"
-        v-model="form.foto"
-      />
+      <PessoaImagemSelector :id="form.id" />
     </div>
   </div>
 </template>
