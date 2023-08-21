@@ -79,10 +79,11 @@ export default {
       try {
         const params = {
           usuario: cloneDeep(usuarioSelecionado.value),
-          tipos: usuarioSelecionado.value.tipos
+          tipos: [usuarioSelecionado.value.tipos]
         }
         params.usuario.dataNascimento = formatDate(params.usuario.dataNascimento, false)
         delete params.usuario.tipos
+
         await UsuariosAPI.salvar(params)
         showSuccess(props.usuario.id ? 'Usuario atualizado' : 'Usuario cadastrado')
         emit('atualizar')
@@ -101,7 +102,7 @@ export default {
         usuarioOriginal.value = resp.data.object.usuario
 
         usuarioOriginal.value.dataNascimento = formatDate(usuarioOriginal.value.dataNascimento)
-        usuarioOriginal.value.tipos = resp.data.object.tipos
+        usuarioOriginal.value.tipos = resp.data.object.tipos[0]
         usuarioSelecionado.value = cloneDeep(usuarioOriginal.value)
       } catch (error) {
         console.error(error)
