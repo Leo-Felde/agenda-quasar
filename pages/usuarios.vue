@@ -13,6 +13,7 @@
       <template #top>
         <span class="text-h6 q-my-auto">Usuários</span>
         <q-input
+          v-if="!$q.screen.lt.md"
           v-model="search"
           class="q-ml-sm"
           dense

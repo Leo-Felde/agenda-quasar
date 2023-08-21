@@ -15,6 +15,7 @@
         <span class="text-h6 q-my-auto">Contatos</span>
 
         <q-input
+          v-if="!$q.screen.lt.md"
           v-model="search"
           class="q-ml-sm"
           rounded

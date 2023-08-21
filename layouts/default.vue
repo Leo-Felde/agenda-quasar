@@ -28,7 +28,7 @@
       @update:modelValue="showDrawer = $event"
     />
 
-    <q-page-container>
+    <q-page-container :class="$q.screen.lt.md ? 'mobile' : ''">
       <slot />
     </q-page-container>
   </q-layout>
@@ -50,3 +50,9 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.q-page-container.mobile
+  padding-left: 0px !important
+  padding-right: 0px !important
+</style>
