@@ -22,11 +22,11 @@ const createAPI = (routeURL, responseType = 'json') => {
 
   api.interceptors.response.use(undefined,
     (error) => {
-      if (error.response.status === 401) {
+      if (error?.response?.status === 401) {
         localStorage.removeItem('userData')
-        return navigateTo('/auth')
+        navigateTo('/auth')
       }
-      
+
       return Promise.reject(error)
     })
 
