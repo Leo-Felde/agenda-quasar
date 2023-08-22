@@ -39,32 +39,44 @@
           class: 'cropper-stencil'
         }"
       />
-      <div class="q-pa-sm d-flex justify-center img-actions">
-        <q-btn
-          flat
-          icon-right="photo_camera"
-          dense
-          @click="showCameraDialog = true"
+      <div class="row q-pa-md">
+        <div :class="$q.screen.lt.md ? 'responsive-col--6 q-mx-auto' : 'responsive-col-5 q-my-auto'">
+          <q-btn
+            flat
+            :class="$q.screen.lt.md ? '' : 'd-flex q-ml-auto q-mr-sm'"
+            icon-right="photo_camera"
+            dense
+            @click="showCameraDialog = true"
+          >
+            tirar uma foto
+          </q-btn>
+        </div>
+        <span
+          v-if="!$q.screen.lt.md"
+          class="col-1 q-my-auto text-h6"
         >
-          tirar uma foto
-        </q-btn>
-        <span class="q-px-md text-h6 q-my-auto"> ou </span>
-        <q-file
-          v-model="selectedFile"
-          filled
-          label="Procurar imagem"
-          clearable
-          dense
-          accept=".jpg, image/*"
-          @update:modelValue="onFileSelect"
-        >
-          <template #prepend>
-            <q-icon name="attach_file" />
-          </template>
-          <template #file>
-            <span class="file-name"> {{ selectedFile.name }} </span>
-          </template>
-        </q-file>
+          ou
+        </span>
+
+        <div :class="`responsive-col-${$q.screen.lt.md ? '6': '5'}`">
+          <q-file
+            v-model="selectedFile"
+            :class="$q.screen.lt.md ? 'q-px-sm' : ''"
+            filled
+            label="Procurar imagem"
+            clearable
+            dense
+            accept=".jpg, image/*"
+            @update:modelValue="onFileSelect"
+          >
+            <template #prepend>
+              <q-icon name="attach_file" />
+            </template>
+            <template #file>
+              <span class="file-name"> {{ selectedFile.name }} </span>
+            </template>
+          </q-file>
+        </div>
       </div>
     </DialogoCrud>
     
