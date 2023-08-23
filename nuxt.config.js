@@ -1,5 +1,14 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import fs from 'fs'
+
 export default defineNuxtConfig({
+  devServer: {
+    host: 'agenda.teste',
+    port: 3000,
+    https: {
+      key: fs.readFileSync('./localhost.key').toString(),
+      cert: fs.readFileSync('./localhost.crt').toString(),
+    },
+  },
   ssr: false,
   css: [
     '~/assets/styles/main.sass',
