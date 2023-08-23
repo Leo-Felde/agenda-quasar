@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware((to) => {
   const storedUser = localStorage.getItem('userData')
   const user = useCurrentUser()
 
-  if (!user && storedUser) {
+  if (!user?.value && storedUser) {
     user.value = JSON.parse(storedUser)
   }
 

@@ -26,8 +26,22 @@ body
       background: #082b35
       .q-field--standout input, .q-field__append
         color: white !important
+      .sticky-header
+        .q-table__top,
+        .q-table__bottom,
+        thead tr:first-child th
+          background-color: var(--q-dark)
+      tr
+        border-color: rgba(255, 255, 255, 0.28)
     &--light
       background: #f6fdff
+      .sticky-header
+        .q-table__top,
+        .q-table__bottom,
+        thead tr:first-child th
+          background-color: white
+      tr
+        border-color: rgba(0, 0, 0, 0.12)
       .q-field--standout input, .q-field__append
         color: black !important
 
@@ -37,3 +51,16 @@ body
 
 .full-width
   width: 100%
+
+.sticky-header
+  thead tr th
+    position: sticky
+    z-index: 1
+  thead tr:first-child th
+    top: 0
+
+  &.q-table--loading thead tr:last-child th
+    top: 48px
+
+  tbody
+    scroll-margin-top: 48px

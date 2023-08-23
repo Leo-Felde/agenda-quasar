@@ -22,4 +22,20 @@ export const showNotification = (message, type, options = {}) => {
   })
 }
 
+export const showPersistentNotification = (message, type, options = {}) => {
+  Notify.create({
+    message: message,
+    type: type,
+    position: 'top-right',
+    ...options,
+    actions: [
+      { icon: 'close',
+        color: 'white',
+        round: true,
+        handler: () => { return true }
+      }
+    ]
+  })
+}
+
 export default showNotification
