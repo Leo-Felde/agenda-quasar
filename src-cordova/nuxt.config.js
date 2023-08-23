@@ -2,10 +2,10 @@
 export default defineNuxtConfig({
   ssr: false,
   generate: {
-    dir: '/src-cordova/www'
+    dir: 'www'
   },
   build: {
-    publicPath: '/src-cordova/www',
+    publicPath: '/',
   },
   scripts: [
     {
