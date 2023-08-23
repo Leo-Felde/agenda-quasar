@@ -24,6 +24,9 @@
     "lodash-es": "^4.17.21",
     "nuxt-quasar-ui": "^2.0.5",
     "quasar": "^2.12.4",
-    "vue-advanced-cropper": "^2.8.8"
+    "vue-advanced-cropper": "^2.8.8",
+    "workbox-core": "^7.0.0",
+    "workbox-precaching": "^7.0.0",
+    "workbox-routing": "^7.0.0"
   }
 }

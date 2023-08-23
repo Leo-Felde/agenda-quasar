@@ -24,10 +24,15 @@ export default defineNuxtConfig({
   },
 
   pwa: {
+    strategies: 'injectManifest',
     manifest: {
       name: 'Agenda PWA',
       short_name: 'agenda',
       description: 'App de agenda usando Nuxt PWA',
+      background_color: '#fff',
+      theme_color: '#1976D2',
+      accent_color: '#1976D2',
+      display: 'standalone',
       icons: [
         {
           src: 'icons/64.png',
