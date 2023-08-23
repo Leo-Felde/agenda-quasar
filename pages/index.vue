@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-table
-      class="my-sticky-header-table"
+      class="sticky-header"
       flat
       bordered
       :rows="lista"
