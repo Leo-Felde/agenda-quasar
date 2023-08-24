@@ -1,0 +1,1 @@
+import{_ as t,k as o,l as s,a8 as r}from'./entry.262740d5.js';const n={},c={class:'row flex-center content-center grow'};function a(e,l,_,d,f,p){return o(),s('div',c,[r(e.$slots,'default')])}const u=t(n,[['render',a]]);export{u as default}
