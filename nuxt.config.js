@@ -1,5 +1,11 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+const path = require('path')
+
 export default defineNuxtConfig({
+  nitro: {
+    output: {
+      publicDir: path.join(__dirname, 'dist')
+    }
+  },
   ssr: false,
   css: [
     '~/assets/styles/main.sass',

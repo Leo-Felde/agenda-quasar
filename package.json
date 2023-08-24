@@ -19,6 +19,9 @@
     "sass": "^1.64.2"
   },
   "dependencies": {
+    "@capacitor/android": "^5.3.0",
+    "@capacitor/cli": "^5.3.0",
+    "@capacitor/core": "^5.3.0",
     "@quasar/extras": "^1.16.5",
     "lodash-es": "^4.17.21",
     "nuxt-quasar-ui": "^2.0.5",
