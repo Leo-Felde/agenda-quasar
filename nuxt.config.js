@@ -3,7 +3,9 @@ export default defineNuxtConfig({
   ssr: false,
   css: [
     '~/assets/styles/main.sass',
+    'biblioteca-quasar/dist/style.css'
   ],
+
   modules: [
     'nuxt-quasar-ui',
     '@nuxtjs/eslint-module'
@@ -13,6 +15,7 @@ export default defineNuxtConfig({
     extras: {
       fontIcons: ['material-icons']
     },
+
     plugins: [
       'Notify',
       'Dialog'
@@ -21,6 +24,15 @@ export default defineNuxtConfig({
       notify:{}
     }
   },
+
+  vite: {
+    server: {
+      fs: {
+        allow: ['..']
+      }
+    }
+  },
+
   eslint: {
     fix: true
   },

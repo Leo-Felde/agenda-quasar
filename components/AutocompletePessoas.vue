@@ -1,35 +1,14 @@
 <template>
   <div>
-    <q-select
+    <lAutocomplete
       v-model="pessoaSelecionada"
+      show-add-btn
       label="pessoa"
-      option-label="nome"
-      use-input
-      filled
-      :options="pessoas"
-      :error="false"
-      @input-value="buscarPessoas"
+      :items="pessoas"
+      @search="buscarPessoas"
+      @click:append-inner="showDialogCrud = true"
       @update:modelValue="selecionarPessoa"
-    >
-      <template #no-option>
-        <q-item>
-          <q-item-section class="text-grey">
-            Nenhuma pessoa encontrada
-          </q-item-section>
-        </q-item>
-      </template>
-
-      <template #append>
-        <q-btn
-          class="q-ml-sm add-btn"
-          icon="add"
-          color="primary"
-          round
-          dense
-          @click.stop.prevent="showDialogCrud = true"
-        />
-      </template>
-    </q-select>
+    />
 
     <FormDialogoPessoa
       v-model="showDialogCrud"
@@ -42,9 +21,11 @@
 import { ref } from 'vue'
 
 import { showError } from '~/utils/notify'
+import { lAutocomplete } from 'biblioteca-quasar'
 
 import PessoasAPI from '~/api/pessoas'
 export default {
+  components: { lAutocomplete },
   props: {
     modelValue: { type: Object, default: () => {}},
     showAddBtn: Boolean
@@ -57,16 +38,7 @@ export default {
     const pessoaSelecionada = ref(null)
     
     watch(() => props.modelValue, () => {
-      if (props.modelValue?.id) {
-        if (!pessoas.value.some(p => p.id === props.modelValue.id)) {
-          pessoas.value.push(props.modelValue)
-          setTimeout(() => {
-            pessoaSelecionada.value = props.modelValue
-          }, 100)
-        }
-      } else {
-        buscarPessoas('')
-      }
+      pessoaSelecionada.value = props.modelValue
     })
 
     onMounted(() => {
@@ -100,7 +72,6 @@ export default {
       setTimeout(() => { // garante que o valor já existe
         selecionarPessoa()
       }, 200)
-      selecionarPessoa()
     }
 
     return {
